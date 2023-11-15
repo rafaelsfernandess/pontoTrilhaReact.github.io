@@ -13,8 +13,6 @@ function CadastroUsuario() {
 
     const [showConfirmacaoEmail, setShowConfirmacaoEmail] = useState(false);
 
-    const [name, setName] = useState('')
-    const [bornDate, setBornDate] = useState('')
     const [password, setPassword] = useState('')
     const [passwordConfirm, setPasswordConfirm] = useState('')
     const [userName, setUserName] = useState('')
@@ -31,8 +29,6 @@ function CadastroUsuario() {
 
     const navigate = useNavigate();
 
-
-
     function handleShowModal() {
         setShowConfirmacaoEmail(true);
     }
@@ -45,14 +41,14 @@ function CadastroUsuario() {
         e.preventDefault()
 
         const data = {
-            name,
+            userName,
             fullName,
             password,
-            userName,
         }
 
         try {
-            const response = await api.post('api/person/v1', data)
+            const response = await api.post('/auth/signup', data)
+            alert('Usuário Cadastrado com sucesso!')
         } catch (error) {
             alert('Erro durante a gravação do usuário, tente novamente')
         }
@@ -90,55 +86,31 @@ function CadastroUsuario() {
                             <div className="col-12">
 
                                 <div className="mb-3">
-                                    <label htmlFor="name" className="form-label">Primeiro Nome:</label>
+                                    <label htmlFor="fullName" className="form-label">Email:</label>
                                     <input
-                                        type="text"
+                                        type="email"
                                         className="form-control"
-                                        value={name}
-                                        id="name"
-                                        name='name'
-                                        aria-describedby="name"
-                                        onChange={(text) => { setName(text.target.value) }}
+                                        value={userName}
+                                        id="fullName"
+                                        fullName='fullName'
+                                        aria-describedby="fullName"
+                                        onChange={(text) => { setUserName(text.target.value) }}
                                     />
                                 </div>
 
                                 <div className="mb-3">
-                                    <label htmlFor="fullName" className="form-label">Sobrenome:</label>
+                                    <label htmlFor="fullName" className="form-label">Nome Completo:</label>
                                     <input
                                         type="text"
                                         className="form-control"
                                         value={fullName}
                                         id="fullName"
-                                        name='fullName'
+                                        fullName='fullName'
                                         aria-describedby="fullName"
                                         onChange={(text) => { setFullName(text.target.value) }}
                                     />
                                 </div>
 
-                                <div className="mb-3">
-                                    <label htmlFor="bornDate" className="form-label">Data de nascimento:</label>
-                                    <input
-                                        type="date"
-                                        className="form-control"
-                                        value={bornDate}
-                                        id="bornDate"
-                                        name='bornDate'
-                                        aria-describedby="bornDate"
-                                        onChange={(text) => { setBornDate(text.target.value) }}
-                                    />
-                                </div>
-                                <div className="mb-3">
-                                    <label htmlFor="email" className="form-label">Email:</label>
-                                    <input
-                                        type="email"
-                                        className="form-control"
-                                        value={userName}
-                                        id="email"
-                                        name='email'
-                                        aria-describedby="email"
-                                        onChange={(text) => { setUserName(text.target.value) }}
-                                    />
-                                </div>
 
                                 <div className=" mb-3">
                                     <label htmlFor="password" className="form-label">Senha:</label>
@@ -149,7 +121,7 @@ function CadastroUsuario() {
                                             className="form-control"
                                             value={password}
                                             id="password"
-                                            name='password'
+                                            fullName='password'
                                             aria-describedby="password"
                                             onChange={(text) => { setPassword(text.target.value) }}
                                         />
@@ -177,7 +149,7 @@ function CadastroUsuario() {
                                             className="form-control"
                                             value={passwordConfirm}
                                             id="passwordConfirm"
-                                            name='passwordConfirm'
+                                            fullName='passwordConfirm'
                                             aria-describedby="passwordConfirm"
                                             onChange={(text) => {
                                                 setPasswordConfirm(text.target.value)

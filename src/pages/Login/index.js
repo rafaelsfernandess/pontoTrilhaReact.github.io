@@ -13,7 +13,7 @@ import api from '../../service/api';
 import { ModalTermos, ModalPoliticaPrivacidade, ModalAlterarSenha } from '../../components/Modal/Modal';
 
 function LoginScreen() {
-    const [userName, setUserName] = useState('');
+    const [username, setUserName] = useState('');
     const [password, setPassword] = useState('');
     const [showModal, setShowModal] = useState(false);
     const [showPoliticaModal, setShowPoliticaModal] = useState(false);
@@ -25,31 +25,20 @@ function LoginScreen() {
         e.preventDefault();
 
         const data = {
-            userName,
+            username,
             password,
         };
 
         try {
             const response = await api.post('auth/signin', data);
-
-            localStorage.setItem('userName', userName);
-            localStorage.setItem('accessToken', response.data.token);
+            localStorage.setItem('username', username);
+            localStorage.setItem('accessToken', response.data.accessToken);
 
             navigate('/inicio');
 
         } catch (error) {
             alert('Falha no login, tente novamente')
         }
-    }
-
-    const usuarios =
-        [{ 'userName': 'rafael@rafael', 'password': 123 },
-        { 'userName': 'will@will', 'password': 123 }]
-
-    const handleSubmit = (e) => {
-        e.preventDefault()
-        const found = usuarios.find((usuario) => usuario.userName === userName)
-        console.log(found.userName === userName && found.password === password)
     }
 
     function handleShowModal() {
@@ -103,11 +92,11 @@ function LoginScreen() {
                                 <div className="mb-3">
                                     <label htmlFor="exampleInputEmail1" className="form-label">E-mail:</label>
                                     <input
-                                        type="userName"
+                                        type="username"
                                         className="form-control"
                                         id="exampleInputEmail1"
-                                        aria-describedby="userName"
-                                        value={userName}
+                                        aria-describedby="username"
+                                        value={username}
                                         placeholder="exemplo@exemplo" onChange={(text) => { setUserName(text.target.value) }} />
                                 </div>
 
