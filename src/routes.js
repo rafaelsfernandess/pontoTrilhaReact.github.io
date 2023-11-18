@@ -6,6 +6,7 @@ import CadastroUsuario from "./pages/CadastroUsuario";
 import EditarUsuario from "./pages/EditarUsuario";
 import Home from "./pages/Home";
 import Usuario from "./pages/Usuario"; 
+import CadastroEvento from "./pages/CadastroEvento"; 
 
 export default function AppRoutes(){
     return(
@@ -17,6 +18,7 @@ export default function AppRoutes(){
                 <Route path="editar-conta" element={ <EditarUsuario /> } />
                 <Route path="inicio" element={ <Home /> } />
                 <Route path="minha-conta" element={ <Usuario /> } />
+                <Route path="criar-evento" element={ <CadastroEvento /> } />
             </Routes>
         </BrowserRouter>
     )

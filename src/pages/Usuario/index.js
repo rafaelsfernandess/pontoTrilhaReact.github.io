@@ -5,9 +5,8 @@ import './styles.css';
 
 import Header from '../../components/Header/Header';
 
-import Foto from "../../assets/pessoa.jfif"
-
 function Usuario() {
+
   return (
     <div>
       <Header />
@@ -15,9 +14,6 @@ function Usuario() {
         <div className="row d-flex justify-content-center mt-5">
           <div className="col-12 col-lg-8 col-xl-8 col-xxl-6">
             <div className="col-12">
-              <div className="img-usuario">
-                <img src={Foto} alt="Foto do usuário" />
-              </div>
             </div>
             <div className="col-12">
               <div className="informacoes-usuario">
@@ -33,7 +29,7 @@ function Usuario() {
                   <Link className="btn btn-warning" to="/editar-conta">
                     <i className="fa fa-edit"></i> Editar conta
                   </Link>
-                  <Link className="btn btn-light">Alterar Senha</Link>
+                  <Link className="btn btn-light"  to="/criar-evento">Criar evento</Link>
                 </div>
               </div>
             </div>

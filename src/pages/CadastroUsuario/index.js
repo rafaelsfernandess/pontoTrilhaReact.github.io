@@ -91,7 +91,7 @@ function CadastroUsuario() {
                                         type="email"
                                         className="form-control"
                                         value={userName}
-                                        id="fullName"
+                                        id="email"
                                         fullName='fullName'
                                         aria-describedby="fullName"
                                         onChange={(text) => { setUserName(text.target.value) }}
