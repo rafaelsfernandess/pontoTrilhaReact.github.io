@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-
+import { faEyeSlash, faEye } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useNavigate } from 'react-router-dom';
 
 import './styles.css';
+
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
@@ -18,6 +20,8 @@ function LoginScreen() {
     const [showModal, setShowModal] = useState(false);
     const [showPoliticaModal, setShowPoliticaModal] = useState(false);
     const [showAlterarSenhaModal, setShowAlterarSenhaModal] = useState(false);
+    const [showPassword, setShowPassword] = useState(false);
+
 
     const navigate = useNavigate();
 
@@ -49,9 +53,12 @@ function LoginScreen() {
         setShowModal(false);
     }
 
+    const togglePasswordVisibility = () => {
+        setShowPassword(!showPassword);
+    };
+
     return (
         <Container fluid>
-
             <Row className={"login"}>
 
                 <Col sm="12" md="7" lg="5" className={"header-text"}>
@@ -85,7 +92,7 @@ function LoginScreen() {
                     </div>
                 </Col>
 
-                <Col sm="12" md="5" lg="7" className="d-flex align-items-center justify-content-center" >
+                <Col sm={12} md={5} lg={7} className="d-flex align-items-center justify-content-center" >
                     <Col className="form-login">
                         <form onSubmit={login} >
                             <Col >
@@ -100,15 +107,26 @@ function LoginScreen() {
                                         placeholder="exemplo@exemplo" onChange={(text) => { setUserName(text.target.value) }} />
                                 </div>
 
-                                <div className="mb-3">
+                                <div className=" mb-3">
                                     <label htmlFor="password" className="form-label">Senha:</label>
-                                    <input
-                                        type="password"
-                                        className="form-control"
-                                        id="password"
-                                        aria-describedby="password"
-                                        value={password}
-                                        onChange={(text) => { setPassword(text.target.value) }} />
+                                    <div className="input-group">
+
+                                        <input
+                                            type={showPassword ? 'text' : 'password'}
+                                            className="form-control"
+                                            value={password}
+                                            id="password"
+                                            aria-describedby="password"
+                                            onChange={(text) => { setPassword(text.target.value) }}
+                                        />
+                                        <button type='button' className='btn btn-outline-secondary' onClick={togglePasswordVisibility}>
+                                            {showPassword ?
+                                                <FontAwesomeIcon icon={faEye} />
+                                                :
+                                                <FontAwesomeIcon icon={faEyeSlash} />
+                                            }
+                                        </button>
+                                    </div>
                                 </div>
 
                                 <div className="mb-5">

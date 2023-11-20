@@ -6,52 +6,46 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSearch } from '@fortawesome/free-solid-svg-icons'
 import './styles.css'
 import T from '../../assets/T.png'
+import { NavDropdown } from 'react-bootstrap';
 function Header() {
   return (
-    <Navbar expand="lg" className="bg-body-tertiary">
-      <Container fluid >
-
-        <img src={T} alt="" className='logo-img'/>
-        <Navbar.Brand href="/inicio" className='col-2 col-lg-4 logo-header'>Ponto Trilha</Navbar.Brand>
-
-        <Navbar.Toggle aria-controls="navbarScroll" />
-        <div className="d-flex col-6 col-lg-4">
-            <form role="search">
-              <div className="input-teste">
-                <button className="botao-pesquisa" type="button">
-                  <FontAwesomeIcon icon={faSearch} />
-                </button>
-                <input className="pesquisa" type="search" placeholder="Search" aria-label="Search" />
+    <Navbar expand="lg" className="px-3 cor" >
+      <Container fluid >          
+      <Navbar.Brand href="/inicio" className='logo-toggle' style={{ color: '#3B8686'}}>Ponto Trilha</Navbar.Brand>
+        <Navbar.Toggle aria-controls="basic-navbar-nav" />
+        <Navbar.Collapse id="basic-navbar-nav ">
+          <Navbar.Brand href="#home" className='logo-inseide-toggle'>Ponto Trilha</Navbar.Brand>
+          <Nav className="me-auto d-flex justify-content-center max">
+            <div className="col-lg-6 space">
+              <div className=" col-6 col-lg-4 max">
+                <form role="search" >
+                  <div className="input-teste ">
+                    <button className="botao-pesquisa" type="button">
+                      <FontAwesomeIcon icon={faSearch} />
+                    </button>
+                    <input className="pesquisa ms-2" type="search" placeholder="Search" aria-label="Search" />
+                  </div>
+                </form>
               </div>
-            </form>
-          </div>
-        <Navbar.Collapse id="navbarScroll">
-
-
-          
-
-          <Nav className=" navbar-collapse col-lg-4" style={{ maxHeight: '100px' }} navbarScroll>
-            <ul className="navbar-nav me-auto mb-2 mb-lg-0 order-1 ul-nav bg-white">
-
-              <li className="nav-item ">
-                <Nav.Link className="nav-link" href="#action1">Ingressos</Nav.Link>
-              </li>
-              <li className="nav-item">
-                <Nav.Link className="nav-link" href="#action1">Favoritos</Nav.Link>
-              </li>
-              <li className="nav-item">
-                <Nav.Link className="nav-link" href="/minha-conta">Conta</Nav.Link>
-              </li>
-            </ul>
-
+            </div>
           </Nav>
-
+          <NavDropdown title="Rafael" id="basic-nav-dropdown" className='mt-3'>
+            <NavDropdown.Item href="/meus-ingressos">
+              Meus ingressos
+            </NavDropdown.Item>
+            <NavDropdown.Divider />
+            <NavDropdown.Item href="/minha-conta">
+                Minha Conta
+            </NavDropdown.Item>
+            <NavDropdown.Item href="/login">
+                Login
+            </NavDropdown.Item>
+          </NavDropdown>
         </Navbar.Collapse>
-
       </Container>
-
-    </Navbar >
+    </Navbar>
   );
 }
 
 export default Header
+

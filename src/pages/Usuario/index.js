@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom';
 
 import './styles.css';
@@ -6,6 +6,12 @@ import './styles.css';
 import Header from '../../components/Header/Header';
 
 function Usuario() {
+  const [nomeCompleto, setNomeCompleto] = useState('')
+  const [email, setEmail] = useState('')
+
+  useEffect(() => {
+    setEmail(localStorage.getItem('username'))
+  }, [])
 
   return (
     <div>
@@ -22,14 +28,13 @@ function Usuario() {
                     Rafael Silva Fernandes
                   </h2>
                   <p className="email-usuario" id="email-usuario">
-                    rafael@rafael.com
+                    {email}
                   </p>
                 </div>
                 <div className="botoes">
-                  <Link className="btn btn-warning" to="/editar-conta">
-                    <i className="fa fa-edit"></i> Editar conta
-                  </Link>
-                  <Link className="btn btn-light"  to="/criar-evento">Criar evento</Link>
+                  <Link className="btn btn-dark" to="/editar-conta"> Editar conta</Link>
+                  <Link className="btn btn-dark"  to="/criar-evento">Criar evento</Link>
+                  <Link className="btn btn-dark"  to="/meus-eventos">Meus eventos</Link>
                 </div>
               </div>
             </div>

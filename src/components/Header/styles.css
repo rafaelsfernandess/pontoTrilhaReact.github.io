@@ -1,55 +1,9 @@
-nav {
-    height: 70px;
-}
-
-.logo-header {
-    font-size: 2em;
-}
-
-.logo-img {
-    width: 50px;
-}
-
-form {
-    width: 100%;
-}
-
-.ul-nav {
-    width: 100%;
-    display: flex;
-    justify-content: space-evenly;
-    font-size: 1.2em;
-}
-
-
-
-.profile {
-    max-width: 180px;
-}
-
-.profile-content {
-    margin-right: 26px;
-}
-
-.dropdown-menu {
-    left: -95px
-}
-
-.profile-img {
-    width: 3.5rem;
-    height: 3.5rem;
-}
-
-.ico {
-    margin-right: 5px;
-    color: rgb(253, 118, 7);
-}
-
 .input-teste {
     display: flex;
     flex-direction: row;
     align-items: center;
     border: 1px solid rgb(133, 133, 133);
+    background-color: #fff;
     padding: .5em;
     border-radius: 10px;
 }
@@ -57,6 +11,10 @@ form {
 .pesquisa:focus+.input-teste {
     border-color: red;
     /* Altere a cor da borda da .input-teste para vermelho quando o input estiver em foco */
+}
+
+.max{
+    width: 100%;
 }
 
 .input-teste input {
@@ -74,67 +32,35 @@ form {
     border-right: 1px solid rgb(173, 171, 171);
 }
 
-li:hover {
-    border-bottom: 1px solid rgb(207, 117, 13);
-}
 
-.nav-item {
-    height: 100% !important;
-}
+
 
 @media (max-width: 660px) {
     .logo-header {
         display: none;
     }
 
-    .ul-nav {
-        height: 100%;
-    }
-}
-
-
-
-@media (max-width: 768px) {
-
-    .nav-item:hover {
-        background-color: rgb(241, 240, 240);
-    }
-}
-
-@media (max-width: 1024px) {
-
-    .nav-item:hover {
-        background-color: rgb(241, 240, 240);
-    }
-}
-
-@media (min-width: 661px) {
-    .logo-img {
-        display: none;
-    }
-}
-
-@media (max-width: 991px) {
-    .nav-item {
-        padding: 10px
-    }
 }
 
 @media (max-width: 1120px) {
     .ico {
         display: none;
     }
-
+}
+@media (min-width: 991px) {
+    .logo-toggle {
+        display: none;
+    }
     
+   
+ 
+}
+@media (max-width: 991px) {
+    .logo-inseide-toggle{
+        display: none;
+
+} .space{
+    margin-top: 10px;
+}
 }
 
-@media (min-width: 992px) {
-    .nav-item {
-        height: 30px;
-    }
-}
-@media (min-width: 992px) {
-    .navbar-nav {
-        background: transparent !important;
-    }
-}

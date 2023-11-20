@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import T from '../../assets/T.png'
-
+import { faEyeSlash, faEye } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Modal } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
@@ -34,44 +35,78 @@ export const ModalPoliticaPrivacidade = ({ showModal, onClose }) => {
 };
 
 
-
 export const ModalAlterarSenha = ({ showModal, onClose }) => {
 
-    const [email, setEmail] = useState('');
+    const [senhaAntiga, setSenhaAntiga] = useState('');
+    const [senhaNova, setSenhaNova] = useState('');
+    const [showSenhaAntiga, setShowSenhaAntiga] = useState(false);
+    const [showSenhaNova, setShowSenhaNova] = useState(false);
 
-    const handleEmailChange = (event) => {
-        setEmail(event.target.value);
+    const handleSenhaChange = (e) => {
+        e.preventDefault()
+        alert('teste')
     };
 
-    // Função para lidar com o envio do email de confirmação
-    const handleEnviarEmail = () => {
-        alert(`Enviando email de confirmação para: ${email}`);
-        setEmail('');
-        onClose();
+    const toggleSenhaAntigaVisibility = () => {
+        setShowSenhaAntiga(!showSenhaAntiga);
+    };
+    const toggleSenhaNovaVisibility = () => {
+        setShowSenhaNova(!showSenhaNova);
     };
 
     return (
-        <Modal show={showModal} onHide={onClose}>
+        <Modal centered={true} show={showModal} onHide={onClose}>
             <Modal.Header closeButton>
                 <Modal.Title>Alterar Senha</Modal.Title>
             </Modal.Header>
             <Modal.Body>
-                <p>Digite seu e-mail para enviarmos a confirmação para alteração de senha</p>
-                <div className="mb-3">
-                    <label htmlFor="recipient-name" className="col-form-label">Email:</label>
-                    <input
-                        type="text"
-                        className="form-control"
-                        id="recipient-name"
-                        placeholder="exemplo@exemplo"
-                        value={email}
-                        onChange={handleEmailChange}
-                    />
+                <div className=" mb-3">
+                    <label htmlFor="senha-antiga" className="form-label">Senha Atual:</label>
+                    <div className="input-group">
+                        <input
+                            type={showSenhaAntiga ? 'text' : 'password'}
+                            className="form-control"
+                            value={senhaAntiga}
+                            id="senha-antiga"
+                            aria-describedby="senha-antiga"
+                            onChange={(text) => { setSenhaAntiga(text.target.value) }}
+                        />
+                        <button type='button' className='btn btn-outline-secondary' onClick={toggleSenhaAntigaVisibility}>
+                            {showSenhaAntiga ?
+                                <FontAwesomeIcon icon={faEye} />
+                                :
+                                <FontAwesomeIcon icon={faEyeSlash} />
+                            }
+                        </button>
+                    </div>
                 </div>
+
+                <div className=" mb-3">
+                    <label htmlFor="senha-nova" className="form-label">Nova Senha:</label>
+                    <div className="input-group">
+
+                        <input
+                            type={showSenhaNova ? 'text' : 'password'}
+                            className="form-control"
+                            value={senhaNova}
+                            id="senha-nova"
+                            aria-describedby="senha-nova"
+                            onChange={(text) => { setSenhaNova(text.target.value) }}
+                        />
+                        <button type='button' className='btn btn-outline-secondary' onClick={toggleSenhaNovaVisibility}>
+                            {showSenhaNova ?
+                                <FontAwesomeIcon icon={faEye} />
+                                :
+                                <FontAwesomeIcon icon={faEyeSlash} />
+                            }
+                        </button>
+                    </div>
+                </div>
+
             </Modal.Body>
             <Modal.Footer>
-                <button className="btn btn-primary" onClick={handleEnviarEmail}>
-                    Enviar Email
+                <button className="btn btn-primary" onClick={handleSenhaChange}>
+                    Salvar
                 </button>
             </Modal.Footer>
         </Modal>
@@ -98,5 +133,4 @@ export const ModalConfirmacaoEmail = ({ showModal, onClose }) => {
         </Modal>
     );
 };
-
 
