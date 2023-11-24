@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { Form, Link } from 'react-router-dom';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import './styles.css';
 
@@ -8,7 +9,9 @@ import { InputMask } from '@react-input/mask';
 import { InputNumberFormat } from '@react-input/number-format';
 import { apiCep } from '../../service/apiCep';
 import { CSSProperties } from "react";
-import ClipLoader from "react-spinners/ClipLoader";
+
+import { faPlus } from '@fortawesome/free-solid-svg-icons'
+
 
 import Footer from '../../components/Footer';
 
@@ -35,16 +38,16 @@ function CadastroEvento() {
   }
 
   const checkCep = async (e) => {
-    
+
     const cep = e.target.value.replace(/\D/g, '')
     apiCep(cep).then(response => {
-      
+
       setRua(response.data.logradouro)
       setBairro(response.data.bairro)
       setCidade(response.data.localidade)
       setEstado(response.data.uf)
     }).catch(e => {
-      
+
 
       console.log(e)
     })
@@ -142,19 +145,36 @@ function CadastroEvento() {
                   onChange={(text) => setValorIngresso(text.target.value)} // "123.456,78 €"
                 />
                 <label htmlFor="valor-ingresso" className="event-label">Valor do ingresso</label>
-
               </div>
 
               <h2 className='fs-4 text mt-5'>Divulgação</h2>
+
+
               <div className="col-12">
-                <label htmlFor="mapa" className="event-label">Mapa</label>
-                <select className="form-select" aria-label="Selecione o mapa">
-                  <option defaultValue={0}>Selecione o mapa</option>
-                  <option value="1">Mapa 1</option>
-                  <option value="2">Mapa 2</option>
-                  <option value="3">Mapa 3</option>
-                  <option value="4">Mapa 4</option>
-                </select>
+                <input type="file" id='arquivo' name='arquivo' className='d-none' />
+                <label htmlFor="arquivo" className="btn add-map"><FontAwesomeIcon icon={faPlus} className='map-ico'/></label>
+              </div>
+
+              <div className="form-floating col-6">
+                <InputMask
+                  className="form-control"
+                  placeholder="CEP"
+                  id="latitude"
+                  mask="__.______"
+                  replacement={{ _: /\d/ }}
+                  onBlur={checkCep} />
+                <label htmlFor="latitude" className="event-label">Latitude</label>
+              </div>
+
+              <div className="form-floating col-6">
+                <InputMask
+                  className="form-control"
+                  placeholder="CEP"
+                  id="longitude"
+                  mask="__.______"
+                  replacement={{ _: /\d/ }}
+                  onBlur={checkCep} />
+                <label htmlFor="longitude" className="event-label">Longitude</label>
               </div>
 
               <div className="col-12 mt-5 d-flex justify-content-end">
@@ -167,7 +187,7 @@ function CadastroEvento() {
         </div>
 
       </div>
-   
+
       <Footer />
     </div>
   );

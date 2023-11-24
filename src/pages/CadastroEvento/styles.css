@@ -2,3 +2,22 @@ form .event-label{
     left: 0.5em;
     
 }
+
+.add-map{
+    padding: 30px 60px;
+    background-color: rgba(19, 122, 219, 0.288);
+    border: 1px solid rgb(0, 132, 255);
+}
+.map-ico{
+    color: rgb(0, 132, 255);
+}
+
+.add-map:hover{
+    padding: 30px 60px;
+    background-color: rgba(19, 122, 219, 0.521);
+    border: 1px solid rgba(19, 122, 219, 0.747);
+}
+
+.add-map:hover .map-ico{
+    color: #fff;
+}
