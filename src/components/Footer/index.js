@@ -6,7 +6,7 @@ import { faSearch } from '@fortawesome/free-solid-svg-icons'
 function Footer() {
     return (
         <footer className="text-center text-lg-start text-white " style={{ backgroundColor: "#1c2331" }}>
-            <section className="d-flex justify-content-between p-4" style={{ backgroundColor: "#FD7821" }}>
+            <section className="d-flex justify-content-between p-4" style={{ backgroundColor: "#BF751B" }}>
                 <div className="me-5">
                     <span>Get connected with us on social networks:</span>
                 </div>
