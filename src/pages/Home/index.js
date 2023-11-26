@@ -10,6 +10,7 @@ import exemplo from '../../assets/banner.jpg'
 import { faClock } from '@fortawesome/free-regular-svg-icons'
 import { faLocationDot, faPrint } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { Link } from 'react-router-dom';
 
 function Home() {
   const [eventsData, setEventsData] = useState([])
@@ -26,20 +27,18 @@ function Home() {
 
   useEffect(() => {
     api('/api/event/v1', { headers })
-    .then(response => {
-      const formattedEvents = response.data.map(event => ({
-        ...event,
-        formattedStartDate: formatDateTime(event.startDate)
-      }));
-      setEventsData(formattedEvents);
-    })
-    .catch(e => {
-      console.log(e)
-    })
-    console.log(eventsData)
+      .then(response => {
+        const formattedEvents = response.data.map(event => ({
+          ...event,
+          formattedStartDate: formatDateTime(event.startDate)
+        }));
+        setEventsData(formattedEvents);
+      })
+      .catch(e => {
+        console.log(e)
+      })
   }, [])
 
-console.log(eventsData)
   return (
     <div>
       <Header />
@@ -47,34 +46,33 @@ console.log(eventsData)
         <div className="container">
           <div className="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
             {
-            
-            eventsData.map(event => (
-              
-              <div className="col" key={event.id} >
-                <div className="card" >
-                  <img src={exemplo} className="card-img-top" alt="..." />
-                  <div className="card-body">
-                    <h5 className="card-title">{event.eventName}</h5>
-                  </div>
-                  <ul className="list-group list-group-flush ">
 
-                    <li className="list-group-item ">
+              eventsData.map(event => (
 
-                      <ul className="list-group list-group-flush">
-                        <li className="list-group-item ">
-                          {<FontAwesomeIcon icon={faClock} />}<span style={{ marginLeft: 10 }}>{`${event.formattedStartDate}`}</span>
-                        </li>
-                        <li className="list-group-item ">
-                          {<FontAwesomeIcon icon={faLocationDot} />}<span style={{ marginLeft: 10 }}>{`${event.city}, ${event.state}`}</span>
-                        </li>
-                      </ul>
+                <div className="col" key={event.id} >
+                  <Link to={"/evento/"+event.id} target="_blank" className="card" >
+                    <img src={exemplo} className="card-img-top" alt="..." />
+                    <div className="card-body">
+                      <h5 className="card-title">{event.eventName}</h5>
+                    </div>
+                    <ul className="list-group list-group-flush ">
 
-                    </li>
-                  </ul>
+                      <li className="list-group-item ">
 
+                        <ul className="list-group list-group-flush">
+                          <li className="list-group-item ">
+                            {<FontAwesomeIcon icon={faClock} />}<span style={{ marginLeft: 10 }}>{`${event.formattedStartDate}`}</span>
+                          </li>
+                          <li className="list-group-item ">
+                            {<FontAwesomeIcon icon={faLocationDot} />}<span style={{ marginLeft: 10 }}>{`${event.city}, ${event.state}`}</span>
+                          </li>
+                        </ul>
+
+                      </li>
+                    </ul>
+                  </Link>
                 </div>
-              </div>
-            ))}
+              ))}
           </div>
         </div>
       </div>
