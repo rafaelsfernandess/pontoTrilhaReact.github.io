@@ -9,7 +9,6 @@ import Usuario from "./pages/Usuario";
 import CadastroEvento from "./pages/CadastroEvento"; 
 import Ingressos from "./pages/Ingressos";
 import MeusEventos from "./pages/MeusEventos";
-import SeuComponente from "./pages/teste";
 import Evento from "./pages/Evento";
 
 export default function AppRoutes(){
@@ -25,7 +24,6 @@ export default function AppRoutes(){
                 <Route path="criar-evento" element={ <CadastroEvento /> } />
                 <Route path="meus-ingressos" element={ <Ingressos /> } />
                 <Route path="meus-eventos" element={ <MeusEventos /> } />
-                <Route path="teste" element={ <SeuComponente /> } />
                 <Route path="evento/:id" element={ <Evento /> } />
             </Routes>
         </BrowserRouter>

@@ -14,9 +14,7 @@ import api from '../../service/api';
 
 import { faPlus } from '@fortawesome/free-solid-svg-icons'
 
-
 import Footer from '../../components/Footer';
-import axios from 'axios';
 
 function CadastroEvento() {
 
@@ -110,7 +108,7 @@ function CadastroEvento() {
     };
 
     try {
-      const response = await axios.post('https://pontotrilha.onrender.com/api/event/v1', data, { headers })
+      const response = await api.post('/api/event/v1', data, { headers })
       console.log(response.data)
       alert('Evento Cadastrado com sucesso!')
     } catch (error) {
