@@ -19,48 +19,48 @@ import Footer from '../../components/Footer';
 function CadastroEvento() {
 
   // LOCAL DO EVENTO
-  const [locationName, setLocationName] = useState('');
-  const [zipCode, setZipCode] = useState('');
-  const [number, setNumber] = useState('');
-  const [street, setStreet] = useState('');
-  const [neighborhood, setNeighborhood] = useState('');
-  const [city, setCity] = useState('');
-  const [state, setState] = useState('');
-  const [complement, setComplement] = useState('');
+  const [locationName, setLocationName] = useState('Local B');
+  const [zipCode, setZipCode] = useState('88809-020');
+  const [number, setNumber] = useState('123');
+  const [street, setStreet] = useState('Rua B');
+  const [neighborhood, setNeighborhood] = useState('Bairro B');
+  const [city, setCity] = useState('Cidade B');
+  const [state, setState] = useState('Estado B');
+  const [complement, setComplement] = useState('Complemento B');
 
-  // SOBRE EVENTO
-  const [eventName, setEventName] = useState('');
-  const [description, setDescription] = useState('');
+  // // SOBRE EVENTO
+  const [eventName, setEventName] = useState('Evento B');
+  const [description, setDescription] = useState('Descrição do Evento B');
 
-  // DATA E HORÁRIO
-  const [startDate, setStartDate] = useState('');
-  const [horarioInicioEvento, setHorarioInicioEvento] = useState('')
-  const [endDate, setEndDate] = useState('');
-  const [horarioTerminoEvento, setHorarioTerminoEvento] = useState('')
+  // // DATA E HORÁRIO
+  const [startDate, setStartDate] = useState('2023-01-01');
+  const [horarioInicioEvento, setHorarioInicioEvento] = useState('12:30')
+  const [endDate, setEndDate] = useState('2023-01-10');
+  const [horarioTerminoEvento, setHorarioTerminoEvento] = useState('12:30')
 
   // INGRESSO 
-  const [ticketTitle, setTicketTitle] = useState('');
-  const [quantity, setQuantity] = useState(0);
-  const [tickePrice, setTickePrice] = useState('R$ ');
-  let tickePricebd = parseFloat(tickePrice.replace('R$ ', '').replace(',', '.'));
-  console.log(tickePricebd)
-  const [startOfSales, setStartOfSales] = useState('');
-  const [horaInicioVendas, setHoraInicioVendas] = useState('')
-  const [endOfSales, setEndOfSales] = useState('');
-  const [horaTerminoVendas, setHoraTerminoVendas] = useState('')
+  const [ticketTitle, setTicketTitle] = useState('Ingresso B');
+  const [quantity, setQuantity] = useState(100);
+  const [tickePrice, setTickePrice] = useState(50.0);
+  // let tickePricebd = parseFloat(tickePrice.replace('R$ ', '').replace(',', '.'));
+  // console.log(tickePricebd)
+  const [startOfSales, setStartOfSales] = useState('2022-12-01');
+  const [horaInicioVendas, setHoraInicioVendas] = useState('12:30')
+  const [endOfSales, setEndOfSales] = useState('2022-12-31');
+  const [horaTerminoVendas, setHoraTerminoVendas] = useState('12:30')
+
   // Quantidade permitida por compra
   const [minPurchaseQuantity, setMinPurchaseQuantity] = useState(1);
   const [maxPurchaseQuantity, setMaxPurchaseQuantity] = useState(1);
 
   // DIVULGAÇÃO
-  const [map_description, setMap_description] = useState('');
+  const [map_description, setMap_description] = useState('TESTE MAPA');
   const [latitude, setLatitude] = useState('1');
   const [longitude, setLongitude] = useState('2');
   const [file, setfile] = useState(null)
 
   // RESPONSABILIDADES
   const [responsabilities, setResponsabilities] = useState('1')
-
   const [eventStatus, setEventStatus] = useState(1);
 
   const inputRef = useRef()
@@ -90,17 +90,17 @@ function CadastroEvento() {
       endDate,
       ticketTitle,
       quantity,
-      tickePrice: tickePricebd,
+      tickePrice,
       startOfSales,
       endOfSales,
       minPurchaseQuantity,
       maxPurchaseQuantity,
       eventStatus,
       map_description,
+      number,
       latitude,
       longitude,
     }
-    console.log(data)
     const headers = {
       'Content-Type': 'multipart/form-data',
       'Authorization': `Bearer ${accessToken}`,
@@ -136,13 +136,19 @@ function CadastroEvento() {
 
   const handleDrop = (e) => {
     e.preventDefault()
-    setfile(e.dataTransfer.files)
+    setfile(e.dataTransfer.files[0])
+
   }
 
   const handleDragOver = (e) => {
     e.preventDefault()
   }
 
+  const handleInput = (e) => {
+    // setfile(e.target.files[0])
+    console.log(e.target.files[0])
+  }
+  
   return (
     <div>
       <Header />
@@ -273,20 +279,19 @@ function CadastroEvento() {
 
 
               <h2 className='fs-4 text mt-5'>Divulgação</h2>
-
               {!file && (
                 <div className="col-12" onDragOver={handleDragOver} onDrop={handleDrop}>
-                  <input type="file" id='arquivo' name='arquivo' onChange={(e) => setfile(e.target.files)} className='d-none' ref={inputRef} />
+                  <input type="file" id='arquivo' name='arquivo' onChange={(e) => setfile(e.target.files[0])} className='d-none' ref={inputRef} />
                   <label className="btn add-map" onClick={() => inputRef.current.click()}><p>Arraste ou clique para adicionar seu mapa</p></label>
                 </div>
               )}
               {file && (
                 <div>
                   <ul>
-                    {Array.from(file).map((file, idx) => <li key={idx}>{file.name}</li>)}
+                    <li key={1}>{file.name}</li>
                   </ul>
                   <div>
-                    <button className='btn btn-warning' onClick={()=> setfile(null)}>Cancelar</button>
+                    <button className='btn btn-warning' onClick={() => setfile(null)}>Cancelar</button>
                   </div>
                 </div>
 
@@ -330,7 +335,7 @@ function CadastroEvento() {
               <div className="col-12 mt-5 d-flex justify-content-end mb-5">
                 <button className='btn btn-primary btn-lg'>Salvar Evento</button>
               </div>
-
+              {/* <input type="file" onChange={handleInput} /> */}
 
             </form>
           </div>
