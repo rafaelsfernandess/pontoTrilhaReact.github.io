@@ -4,10 +4,12 @@ import { faEyeSlash, faEye } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { ModalConfirmacaoEmail } from '../../components/Modal/Modal';
 import { useNavigate } from 'react-router-dom';
+import Loading from '../../components/Loading'
 
 import './styles.css'
 
 import api from '../../service/api';
+import Lottie from 'lottie-react';
 
 function CadastroUsuario() {
 
@@ -19,6 +21,7 @@ function CadastroUsuario() {
     const [fullName, setFullName] = useState('')
     const [showPassword, setShowPassword] = useState(false);
     const [showPasswordConfirm, setShowPasswordConfirm] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
 
     const handlePasswordChange = (event) => {
         setPassword(event.target.value);
@@ -43,18 +46,21 @@ function CadastroUsuario() {
 
     async function createUser(e) {
         e.preventDefault()
-
+        setIsLoading(true)
         const data = {
             userName,
             fullName,
             password,
         }
-
+        console.log(data)
         try {
             const response = await api.post('/auth/signup', data)
+            setIsLoading(false)
             alert('Usuário Cadastrado com sucesso!')
         } catch (error) {
-            alert('Erro durante a gravação do usuário, tente novamente')
+            alert(error)
+            // alert('Erro durante a gravação do usuário, tente novamente')
+            setIsLoading(false)
         }
 
 
@@ -63,6 +69,28 @@ function CadastroUsuario() {
 
     return (
         <div>
+            {isLoading &&
+                (<div style={{
+                    position: 'fixed',
+                    top: 0,
+                    left: 0,
+                    width: '100%',
+                    height: '100%',
+                    backgroundColor: 'rgba(0,0,0,0.4)',
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    zIndex: 9999,
+                    width: '100%'
+                }}>
+                    <Lottie animationData={Loading}
+                        style={{
+                            width: '20%'
+                        }}
+
+                    />
+                </div>)
+            }
             <div className="container-fluid">
 
                 <header className="row">

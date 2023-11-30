@@ -13,6 +13,8 @@ import Col from 'react-bootstrap/Col';
 import api from '../../service/api';
 
 import { ModalTermos, ModalPoliticaPrivacidade, ModalAlterarSenha } from '../../components/Modal/Modal';
+import Lottie from 'lottie-react';
+import Loading from '../../components/Loading'
 
 function LoginScreen() {
     const [username, setUserName] = useState('');
@@ -21,13 +23,14 @@ function LoginScreen() {
     const [showPoliticaModal, setShowPoliticaModal] = useState(false);
     const [showAlterarSenhaModal, setShowAlterarSenhaModal] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
+    const [isLoading, setIsLoading] = useState(false)
 
 
     const navigate = useNavigate();
 
     async function login(e) {
+        setIsLoading(true)
         e.preventDefault();
-
         const data = {
             username,
             password,
@@ -37,10 +40,12 @@ function LoginScreen() {
             const response = await api.post('auth/signin', data);
             localStorage.setItem('username', username);
             localStorage.setItem('accessToken', response.data.accessToken);
-
+            
+            setIsLoading(false)
             navigate('/inicio');
 
         } catch (error) {
+            setIsLoading(false)
             alert('Falha no login, tente novamente')
         }
     }
@@ -59,9 +64,34 @@ function LoginScreen() {
 
     return (
         <Container fluid>
+            {isLoading &&
+                (<div style={{
+                    position: 'fixed',
+                    top: 0,
+                    left: 0,
+                    width: '100%',
+                    height: '100%',
+                    backgroundColor: 'rgba(0,0,0,0.4)',
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    zIndex: 9999,
+                    width: '100%'
+                }}>
+                    <Lottie animationData={Loading}
+                        style={{
+                            width: '20%'
+                        }}
+
+                    />
+                </div>)
+            }
+                
+            
             <Row className={"login"}>
 
                 <Col sm="12" md="7" lg="5" className={"header-text"}>
+
                     <div className={"header-logo"}>
                         <div className={"blur"}>
                             <Row>

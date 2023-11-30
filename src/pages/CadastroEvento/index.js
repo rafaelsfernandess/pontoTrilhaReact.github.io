@@ -9,15 +9,17 @@ import { InputMask } from '@react-input/mask';
 import { InputNumberFormat } from '@react-input/number-format';
 import { apiCep } from '../../service/apiCep';
 import { CSSProperties } from "react";
-
+import Lottie from 'lottie-react';
 import api from '../../service/api';
 
 import { faPlus } from '@fortawesome/free-solid-svg-icons'
 
 import Footer from '../../components/Footer';
-
+import Loading from '../../components/Loading'
 function CadastroEvento() {
 
+  const dataHoje = new Date()
+  const dataHoje2 = dataHoje.toLocaleDateString()
   // LOCAL DO EVENTO
   const [locationName, setLocationName] = useState('Local B');
   const [zipCode, setZipCode] = useState('88809-020');
@@ -27,16 +29,17 @@ function CadastroEvento() {
   const [city, setCity] = useState('Cidade B');
   const [state, setState] = useState('Estado B');
   const [complement, setComplement] = useState('Complemento B');
-
+  const [isLoading, setIsLoading] = useState(false)
   // // SOBRE EVENTO
   const [eventName, setEventName] = useState('Evento B');
   const [description, setDescription] = useState('Descrição do Evento B');
 
   // // DATA E HORÁRIO
-  const [startDate, setStartDate] = useState('2023-01-01');
-  const [horarioInicioEvento, setHorarioInicioEvento] = useState('12:30')
-  const [endDate, setEndDate] = useState('2023-01-10');
-  const [horarioTerminoEvento, setHorarioTerminoEvento] = useState('12:30')
+  const [startDate, setStartDate] = useState(dataHoje2);
+  const [horarioInicioEvento, setHorarioInicioEvento] = useState(null)
+
+  const [endDate, setEndDate] = useState(dataHoje2);
+  const [horarioTerminoEvento, setHorarioTerminoEvento] = useState()
 
   // INGRESSO 
   const [ticketTitle, setTicketTitle] = useState('Ingresso B');
@@ -44,10 +47,10 @@ function CadastroEvento() {
   const [tickePrice, setTickePrice] = useState(50.0);
   // let tickePricebd = parseFloat(tickePrice.replace('R$ ', '').replace(',', '.'));
   // console.log(tickePricebd)
-  const [startOfSales, setStartOfSales] = useState('2022-12-01');
-  const [horaInicioVendas, setHoraInicioVendas] = useState('12:30')
-  const [endOfSales, setEndOfSales] = useState('2022-12-31');
-  const [horaTerminoVendas, setHoraTerminoVendas] = useState('12:30')
+  const [startOfSales, setStartOfSales] = useState(dataHoje2);
+  const [horaInicioVendas, setHoraInicioVendas] = useState(null)
+  const [endOfSales, setEndOfSales] = useState(dataHoje2);
+  const [horaTerminoVendas, setHoraTerminoVendas] = useState(null)
 
   // Quantidade permitida por compra
   const [minPurchaseQuantity, setMinPurchaseQuantity] = useState(1);
@@ -62,61 +65,76 @@ function CadastroEvento() {
   // RESPONSABILIDADES
   const [responsabilities, setResponsabilities] = useState('1')
   const [eventStatus, setEventStatus] = useState(1);
+  const [tickePriceStripe, setTickePriceStripe] = useState('12');
 
   const inputRef = useRef()
 
   // TOKEM
   const accessToken = localStorage.getItem('accessToken')
+
+
   async function createEvent(e) {
     e.preventDefault()
+    setIsLoading(true)
 
-    // const contatenaDataHoraInicio = startDate.split('/').reverse().join('-') //+ ' ' + horarioInicioEvento;
-    // const contatenaDataHoraTermino = endDate.split('/').reverse().join('-') //+ ' ' + horarioTerminoEvento;
-    // const inicioVendas = startOfSales.split('/').reverse().join('-') //+ ' ' + horaInicioVendas
-    // const terminoVendas = endOfSales.split('/').reverse().join('-') //+ ' ' + horaTerminoVendas
+    const contatenaStartDate = startDate.split('/').reverse().join('/') //+ ' ' + horarioInicioEvento;
+    const contatenaEndDate = endDate.split('/').reverse().join('/')//+ ' ' + horarioInicioEvento;
+    const contatenaStartSales = startOfSales.split('/').reverse().join('/') //+ ' ' + horarioInicioEvento;
+    const contatenaEndSales = startOfSales.split('/').reverse().join('/') //+ ' ' + horarioInicioEvento;
+
+    const inicioEvento = new Date(contatenaStartDate).toISOString()
+    const fimEvento = new Date(contatenaEndDate).toISOString()
+    const inicioVendaIngresso = new Date(contatenaStartSales).toISOString()
+    const fimVendaIngresso = new Date(contatenaEndSales).toISOString()
 
     const data = {
-      file,
       locationName,
       street,
       neighborhood,
+      number,
       city,
       state,
       zipCode,
       complement,
       eventName,
       description,
-      startDate,
-      endDate,
+      startDate: contatenaStartDate,
+      endDate: contatenaEndDate,
       ticketTitle,
-      quantity,
-      tickePrice,
-      startOfSales,
-      endOfSales,
-      minPurchaseQuantity,
-      maxPurchaseQuantity,
-      eventStatus,
+      quantity: 1,
+      tickePrice: 1,
+      tickePriceStripe,
+      startOfSales: contatenaStartSales,
+      endOfSales: contatenaEndSales,
+      minPurchaseQuantity: 1,
+      maxPurchaseQuantity: 1,
+      eventStatus: 1,
       map_description,
-      number,
-      latitude,
-      longitude,
+      latitude: '1',
+      longitude: '1',
+      file,
     }
+    console.log(data)
     const headers = {
       'Content-Type': 'multipart/form-data',
       'Authorization': `Bearer ${accessToken}`,
       //'Seu-Outro-Header': 'ValorDoOutroHeader',
     };
 
+
     try {
       const response = await api.post('/api/event/v1', data, { headers })
+      setIsLoading(false)
       console.log(response.data)
       alert('Evento Cadastrado com sucesso!')
+
     } catch (error) {
+      setIsLoading(false)
       alert('Erro durante a gravação do evento, tente novamente: ' + error)
     }
 
 
-    // handleShowModal(true)
+
   }
 
   const checkCep = async (e) => {
@@ -144,15 +162,75 @@ function CadastroEvento() {
     e.preventDefault()
   }
 
-  const handleInput = (e) => {
-    // setfile(e.target.files[0])
-    console.log(e.target.files[0])
-  }
-  
+
+
+  const handleDataInicioChange = (event) => {
+    const input = event.target.value;
+    const regex = /^(0[1-9]|1[0-9]|2[0-9]|3[01])\/(0[1-9]|1[0-2])\/\d{4}$/;
+    
+    if (input === '' || regex.test(input)) {
+       setStartDate(input);
+    }
+  };
+
+  const handleDataFimChange = (event) => {
+    const input = event.target.value;
+    const regex = /^(0[1-9]|1[0-9]|2[0-9]|3[01])\/(0[1-9]|1[0-2])\/\d{4}$/;
+
+    if (input === '' || regex.test(input)) {
+      setEndDate(input);
+    }
+  };
+
+  const handleDataInicioVendas = (event) => {
+    const input = event.target.value;
+    const regex = /^(0[1-9]|1[0-9]|2[0-9]|3[01])\/(0[1-9]|1[0-2])\/\d{4}$/;
+
+    if (input === '' || regex.test(input)) {
+      setStartOfSales(input);
+    }
+  };
+
+  const handleDataFimVendas = (event) => {
+    const input = event.target.value;
+    const regex = /^(0[1-9]|1[0-9]|2[0-9]|3[01])\/(0[1-9]|1[0-2])\/\d{4}$/;
+
+    if (input === '' || regex.test(input)) {
+      setEndOfSales(input);
+    }
+  };
+
+
+
+
+
   return (
     <div>
-      <Header />
+      {isLoading &&
+        (<div style={{
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          width: '100%',
+          height: '100%',
+          backgroundColor: 'rgba(0,0,0,0.4)',
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          zIndex: 9999,
+          width: '100%'
+        }}>
+          <Lottie animationData={Loading}
+            style={{
+              width: '20%'
+            }}
 
+          />
+        </div>)
+      }
+
+
+      <Header />
       <div className='container'>
         <div className='row'>
           <div className="col-12 border-bottom pb-3 mt-5">
@@ -207,16 +285,36 @@ function CadastroEvento() {
 
               <h2 className='fs-4 text mt-5'>Data e horário</h2>
               <div className="form-floating col-6 col-md-3">
-                <input type="date" className="form-control" value={startDate} id="dia-inicio" onChange={(text) => setStartDate(text.target.value)} />
+                <InputMask
+                  mask="dd/mm/aaaa"
+                  replacement={{ d: /\d/, m: /\d/, a: /\d/ }}
+                  value={startDate}
+                  onChange={handleDataInicioChange}
+                  className="form-control"
+                  id="dia-inicio"
+                  showMask  // Certifique-se de que showMask esteja presente para exibir a máscara
+                  separate  // O separate ajuda a separar os campos de dia, mês e ano
+                />
                 <label htmlFor="dia-inicio" className="event-label">Dia de início</label>
               </div>
               <div className="form-floating col-6 col-md-3">
+
                 <input type="time" className="form-control" value={horarioInicioEvento} id="dia-inicio" onChange={(text) => setHorarioInicioEvento(text.target.value)} />
                 <label htmlFor="dia-inicio" className="event-label">Horário de inicio</label>
               </div>
               <span className='col-12'></span>
               <div className="form-floating col-6 col-md-3">
-                <input type="date" className="form-control" value={endDate} id="dia-termino" onChange={(text) => setEndDate(text.target.value)} />
+                <InputMask
+                  mask="dd/mm/aaaa"
+                  replacement={{ d: /\d/, m: /\d/, a: /\d/ }}
+                  value={endDate}
+                  onChange={handleDataFimChange}
+                  className="form-control"
+                  id="dia-termino"
+                  showMask  // Certifique-se de que showMask esteja presente para exibir a máscara
+                  separate  // O separate ajuda a separar os campos de dia, mês e ano
+                />
+                {/* <input type="date" className="form-control" value={endDate} id="dia-termino" onChange={(text) => setEndDate(text.target.value)} /> */}
                 <label htmlFor="dia-termino" className="event-label">Dia de Término</label>
               </div>
               <div className="form-floating col-6 col-md-3">
@@ -250,7 +348,17 @@ function CadastroEvento() {
                 <label htmlFor="valor-ingresso" className="event-label">Valor do ingresso</label>
               </div>
               <div className="form-floating col-12 col-md-6">
-                <input type="date" min="0" className="form-control" value={startOfSales} id="data-inicio-ingresso" placeholder="Data inicio de vendas" onChange={(text) => setStartOfSales(text.target.value)} />
+                <InputMask
+                  mask="dd/mm/aaaa"
+                  replacement={{ d: /\d/, m: /\d/, a: /\d/ }}
+                  value={startOfSales}
+                  onChange={handleDataInicioVendas}
+                  className="form-control"
+                  id="data-inicio-ingresso"
+                  showMask  // Certifique-se de que showMask esteja presente para exibir a máscara
+                  separate  // O separate ajuda a separar os campos de dia, mês e ano
+                />
+                {/* <input type="date" min="0" className="form-control" value={startOfSales} id="data-inicio-ingresso" placeholder="Data inicio de vendas" onChange={(text) => setStartOfSales(text.target.value)} /> */}
                 <label htmlFor="data-inicio-ingresso" className="event-label">Data inicio de vendas</label>
               </div>
               <div className="form-floating col-12 col-md-6">
@@ -258,7 +366,17 @@ function CadastroEvento() {
                 <label htmlFor="horario-inicio-ingresso" className="event-label">Hora inicio de vendas</label>
               </div>
               <div className="form-floating col-12 col-md-6">
-                <input type="date" min="0" className="form-control" value={endOfSales} id="data-termino-ingresso" placeholder="Data término de vendas" onChange={(text) => setEndOfSales(text.target.value)} />
+                <InputMask
+                  mask="dd/mm/aaaa"
+                  replacement={{ d: /\d/, m: /\d/, a: /\d/ }}
+                  value={endOfSales}
+                  onChange={handleDataFimVendas}
+                  className="form-control"
+                  id="data-termino-ingresso"
+                  showMask  // Certifique-se de que showMask esteja presente para exibir a máscara
+                  separate  // O separate ajuda a separar os campos de dia, mês e ano
+                />
+                {/* <input type="date" min="0" className="form-control" value={endOfSales} id="data-termino-ingresso" placeholder="Data término de vendas" onChange={(text) => setEndOfSales(text.target.value)} /> */}
                 <label htmlFor="data-termino-ingresso" className="event-label">Data término de vendas</label>
               </div>
               <div className="form-floating col-12 col-md-6">
