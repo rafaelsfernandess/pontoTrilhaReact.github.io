@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom'
+import { Link, useParams } from 'react-router-dom'
 import api from '../../service/api'
 import Header from '../../components/Header/Header'
 import Footer from '../../components/Footer'
@@ -106,7 +106,10 @@ function Evento() {
                 </div>
 
                 <div className="col-12 col-sm-6 d-flex align-items-center justify-content-center">
-                  <button className="btn btn-success buy-ticket" type="button">Comprar</button>
+                  <Link to={'verificacao-pagamento'} className="btn btn-success buy-ticket" type="button" 
+                  style={{display: 'flex', justifyContent:'center', alignItems:'center'}}>
+                    Comprar
+                  </Link>
                 </div>
               </div>
             </div>
