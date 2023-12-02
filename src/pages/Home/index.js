@@ -7,10 +7,10 @@ import Footer from '../../components/Footer';
 import api from '../../service/api';
 import exemplo from '../../assets/banner.jpg'
 
-import { faClock } from '@fortawesome/free-regular-svg-icons'
+import { faClock, faCalendarCheck, faCalendarXmark } from '@fortawesome/free-regular-svg-icons'
 import { faLocationDot, faPrint } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { Link } from 'react-router-dom';
+import { Link,  } from 'react-router-dom';
 
 function Home() {
   const [eventsData, setEventsData] = useState([])
