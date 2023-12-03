@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { Form, Link } from 'react-router-dom';
+import { Form, Link, useParams } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import './styles.css';
@@ -13,66 +13,115 @@ import Lottie from 'lottie-react';
 import api from '../../service/api';
 import Footer from '../../components/Footer';
 import Loading from '../../components/Loading'
-function CadastroEvento() {
 
-  // LOCAL DO EVENTO
-  const [locationName, setLocationName] = useState('');
-  const [zipCode, setZipCode] = useState('');
-  const [number, setNumber] = useState('');
-  const [street, setStreet] = useState('');
-  const [neighborhood, setNeighborhood] = useState('');
-  const [city, setCity] = useState('');
-  const [state, setState] = useState('');
-  const [complement, setComplement] = useState('');
-  const [isLoading, setIsLoading] = useState(false)
+function EditarEvento() {
+  const { id } = useParams()
 
-  // // SOBRE EVENTO
-  const [eventName, setEventName] = useState('');
-  const [description, setDescription] = useState('');
-
-  // // DATA E HORÁRIO
-  const [startDate, setStartDate] = useState('01/01/0001');
-  const [startDateTime, setStartDateTime] = useState('01:01')
-
-  const [endDate, setEndDate] = useState('01/01/0001');
-  const [endDateTime, setEndDateTime] = useState('01:01')
-
-  // INGRESSO 
-  const [ticketTitle, setTicketTitle] = useState('');
-  const [quantity, setQuantity] = useState(1);
-  const [tickePrice, setTickePrice] = useState(1);
-  // console.log(tickePricebd)
-  const [startOfSales, setStartOfSales] = useState('01/01/0001');
-  const [startOfSalesTime, setStartOfSalesTime] = useState('01:01')
-  const [endOfSales, setEndOfSales] = useState('01/01/0001');
-  const [endOfSalesTime, setEndOfSalesTime] = useState('01:01')
-
-  // Quantidade permitida por compra
-  const [minPurchaseQuantity, setMinPurchaseQuantity] = useState(1);
-  const [maxPurchaseQuantity, setMaxPurchaseQuantity] = useState(1);
-
-  // DIVULGAÇÃO
-  const [map_description, setMap_description] = useState('TESTE A');
-  const [latitude, setLatitude] = useState('1');
-  const [longitude, setLongitude] = useState('2');
-  const [file, setfile] = useState(null)
-
-  // RESPONSABILIDADES
-  const [responsabilities, setResponsabilities] = useState('')
-  const [eventStatus, setEventStatus] = useState(1);
-  const [tickePriceStripe, setTickePriceStripe] = useState('1');
-
-  const inputRef = useRef()
-
+  const [eventData, setEventData] = useState({})
   // TOKEM
   const accessToken = localStorage.getItem('accessToken')
 
+  const headers = {
+    'Content-Type': 'application/json',
+    'Authorization': `Bearer ${accessToken}`,
+  };
 
-  async function createEvent(e) {
+  useEffect(() => {
+    api.get('/api/event/v1/' + id, { headers })
+      .then(response => {
+
+        setLocationName(`${response.data.locationName}`);
+        setZipCode(`${response.data.zipCode}`);
+        setNumber(response.data.number);
+        setStreet(`${response.data.street}`);
+        setNeighborhood(`${response.data.neighborhood}`);
+        setCity(`${response.data.city}`);
+        setState(`${response.data.state}`);
+        setComplement(`${response.data.complement}`);
+        setIsLoading(false)
+        setEventName(`${response.data.eventName}`);
+        setDescription(`${response.data.description}`);
+        setStartDate(`${response.data.startDate.split('-').reverse().join('/')}`);
+        setStartDateTime(`${response.data.startDateTime}`)
+        setEndDate(`${response.data.endDate.split('-').reverse().join('/')}`);
+        setEndDateTime(`${response.data.endDateTime}`)
+        setTicketTitle(`${response.data.ticketTitle}`);
+        setQuantity(`${response.data.quantity}`);
+        setTickePrice(`${response.data.tickePrice}`);
+        setStartOfSales(`${response.data.startOfSales.split('-').reverse().join('/')}`);
+        setStartOfSalesTime(`${response.data.startOfSalesTime}`)
+        setEndOfSales(`${response.data.endOfSales.split('-').reverse().join('/')}`);
+        setEndOfSalesTime(`${response.data.endOfSalesTime}`)
+        setMinPurchaseQuantity(response.data.minPurchaseQuantity);
+        setMaxPurchaseQuantity(response.data.maxPurchaseQuantity);
+        setMap_description(`${response.data.map.description}`);
+        setLatitude(`${response.data.map.latitude}`);
+        setLongitude(`${response.data.map.longitude}`);
+        setfile(`${response.data.map.idGoogle}`)
+        // setResponsabilities(`${response.data.responsabilities}`)
+        setEventStatus(`${response.data.eventStatus}`);
+        setTickePriceStripe(`${response.data.tickePriceStripe}`);
+      }).catch(e => console.log(e))
+
+  }, [])
+
+  // LOCAL DO EVENTO
+  const [locationName, setLocationName] = useState(`${eventData.locationName}`);
+  const [zipCode, setZipCode] = useState(`${eventData.zipCode}`);
+  const [number, setNumber] = useState(eventData.number);
+  const [street, setStreet] = useState(`${eventData.street}`);
+  const [neighborhood, setNeighborhood] = useState(`${eventData.neighborhood}`);
+  const [city, setCity] = useState(`${eventData.city}`);
+  const [state, setState] = useState(`${eventData.state}`);
+  const [complement, setComplement] = useState(`${eventData.complement}`);
+  const [isLoading, setIsLoading] = useState(false)
+
+  // // SOBRE EVENTO
+  const [eventName, setEventName] = useState(`${eventData.eventName}`);
+  const [description, setDescription] = useState(`${eventData.description}`);
+
+  // // DATA E HORÁRIO
+  const [startDate, setStartDate] = useState(`${eventData.startDate}`);
+  const [startDateTime, setStartDateTime] = useState(`${eventData.startDateTime}`)
+
+  const [endDate, setEndDate] = useState(`${eventData.endDate}`);
+  const [endDateTime, setEndDateTime] = useState(`${eventData.endDateTime}`)
+
+  // INGRESSO 
+  const [ticketTitle, setTicketTitle] = useState(`${eventData.ticketTitle}`);
+  const [quantity, setQuantity] = useState(`${eventData.quantity}`);
+  const [tickePrice, setTickePrice] = useState(`${eventData.tickePrice}`);
+  // console.log(tickePricebd)
+  const [startOfSales, setStartOfSales] = useState(`${eventData.startOfSales}`);
+  const [startOfSalesTime, setStartOfSalesTime] = useState(`${eventData.startOfSalesTime}`)
+  const [endOfSales, setEndOfSales] = useState(`${eventData.endOfSales}`);
+  const [endOfSalesTime, setEndOfSalesTime] = useState(`${eventData.endOfSalesTime}`)
+
+  // Quantidade permitida por compra
+  const [minPurchaseQuantity, setMinPurchaseQuantity] = useState(eventData.minPurchaseQuantity);
+  const [maxPurchaseQuantity, setMaxPurchaseQuantity] = useState(eventData.maxPurchaseQuantity);
+
+  // DIVULGAÇÃO
+  const [map_description, setMap_description] = useState('`${eventData.map.description}`');
+  const [latitude, setLatitude] = useState('`${eventData.map.latitude}`');
+  const [longitude, setLongitude] = useState('`${eventData.map.longitude}`');
+  const [file, setfile] = useState('`${eventData.map.idGoogle')
+
+  // RESPONSABILIDADES
+  // const [responsabilities, setResponsabilities] = useState(`${eventData.responsabilities}`)
+  const [eventStatus, setEventStatus] = useState(`${eventData.eventStatus}`);
+  const [tickePriceStripe, setTickePriceStripe] = useState(`${eventData.tickePriceStripe}`);
+
+  const inputRef = useRef()
+
+
+
+  async function editEvent(e) {
     e.preventDefault()
 
     // setIsLoading(true)
     const data = {
+      id: id, 
       city,
       complement,
       description,
@@ -111,7 +160,7 @@ function CadastroEvento() {
     };
 
     try {
-      const response = await api.post('/api/event/v1', data, { headers })
+      const response = await api.put('/api/event/v1', data, { headers })
       setIsLoading(false)
       console.log(response.data)
       alert('Evento Cadastrado com sucesso!')
@@ -215,13 +264,14 @@ function CadastroEvento() {
 
 
       <Header />
+
       <div className='container'>
         <div className='row'>
           <div className="col-12 border-bottom pb-3 mt-5">
-            <h1 className="display-6">Criar Evento</h1>
+            <h1 className="display-6">Editar Evento</h1>
           </div>
           <div className="col-12 mt-5">
-            <form className="row g-3 " onSubmit={createEvent}>
+            <form className="row g-3 " onSubmit={editEvent}>
 
               <h2 className='fs-4 text '>Local do evento</h2>
               <div className="col-12 form-floating">
@@ -466,7 +516,7 @@ function CadastroEvento() {
 
               <h2 className='fs-4 text mt-5'>Responsabilidades</h2>
               <div className="form-check col-12">
-                <input className="form-check-input" type="checkbox" value={responsabilities} id="defaultCheck1" />
+                {/* <input className="form-check-input" type="checkbox" value={responsabilities} id="defaultCheck1" /> */}
                 <p>
                   Ao publicar este evento, estou de acordo com os Termos de uso, com as Diretrizes de Comunidade
                 </p>
@@ -488,4 +538,4 @@ function CadastroEvento() {
   );
 }
 
-export default CadastroEvento
+export default EditarEvento

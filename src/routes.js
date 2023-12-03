@@ -11,6 +11,7 @@ import Ingressos from "./pages/Ingressos";
 import MeusEventos from "./pages/MeusEventos";
 import Evento from "./pages/Evento";
 import VerificacaoPagamento from "./pages/VerificacaoPagamento";
+import EditarEvento from "./pages/EditarEvento";
 export default function AppRoutes(){
     return(
         <BrowserRouter>
@@ -26,6 +27,7 @@ export default function AppRoutes(){
                 <Route path="meus-eventos" element={ <MeusEventos /> } />
                 <Route path="evento/:id" element={ <Evento /> } />
                 <Route path="evento/:id/verificacao-pagamento" element={ <VerificacaoPagamento /> } />
+                <Route path="editar-evento/:id" element={ <EditarEvento /> } />
                 
             </Routes>
         </BrowserRouter>
