@@ -14,9 +14,9 @@ import VerificacaoPagamento from "./pages/VerificacaoPagamento";
 import EditarEvento from "./pages/EditarEvento";
 export default function AppRoutes(){
     return(
-        <BrowserRouter>
-            <Routes>
-                <Route path="/" element={ <Home/> } />
+        <BrowserRouter >
+            <Routes >
+                <Route path="/" element={ <Login/> } />
                 <Route path="/login" element={ <Login/> } />
                 <Route path="cadastro-usuario" element={ <CadastroUsuario /> } />
                 <Route path="editar-conta" element={ <EditarUsuario /> } />

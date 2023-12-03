@@ -52,9 +52,9 @@ function CadastroEvento() {
   const [maxPurchaseQuantity, setMaxPurchaseQuantity] = useState(1);
 
   // DIVULGAÇÃO
-  const [map_description, setMap_description] = useState('TESTE A');
-  const [latitude, setLatitude] = useState('1');
-  const [longitude, setLongitude] = useState('2');
+  const [map_description, setMap_description] = useState('');
+  const [latitude, setLatitude] = useState('');
+  const [longitude, setLongitude] = useState('');
   const [file, setfile] = useState(null)
 
   // RESPONSABILIDADES

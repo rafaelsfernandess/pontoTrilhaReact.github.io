@@ -160,8 +160,8 @@ function LoginScreen() {
                                 </div>
 
                                 <div className="mb-5">
-                                    <Link className="forgot-password" onClick={() => setShowAlterarSenhaModal(true)}>Esqueceu
-                                        sua senha?</Link>
+                                    {/* <Link className="forgot-password" onClick={() => setShowAlterarSenhaModal(true)}>Esqueceu
+                                        sua senha?</Link> */}
                                 </div>
 
                                 <div className="d-grid">
@@ -177,13 +177,13 @@ function LoginScreen() {
 
                             <Row className="mt-5 terms">
 
-                                <Col>
+                                {/* <Col>
                                     <Link onClick={() => handleShowModal()}>Termos de serviço</Link>
                                 </Col>
 
                                 <Col className="text-end">
                                     <Link onClick={() => setShowPoliticaModal(true)}>Política de privacidade</Link>
-                                </Col>
+                                </Col> */}
                             </Row>
                         </Row>
                     </Col>

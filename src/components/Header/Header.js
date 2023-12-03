@@ -14,7 +14,7 @@ function Header() {
       <Navbar.Brand href="/inicio" className='logo-toggle' style={{ color: '#3B8686'}}>Ponto Trilha</Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav ">
-          <Navbar.Brand href="#home" className='logo-inseide-toggle'>Ponto Trilha</Navbar.Brand>
+          <Navbar.Brand href="/inicio" className='logo-inseide-toggle'>Ponto Trilha</Navbar.Brand>
           <Nav className="me-auto d-flex justify-content-center max">
             <div className="col-lg-6 space">
               <div className=" col-6 col-lg-4 max">
