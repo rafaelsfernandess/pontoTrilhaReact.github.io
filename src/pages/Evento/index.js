@@ -63,6 +63,8 @@ function Evento() {
   const [distancia, setDistancia] = useState([])
   const [center, setCenter] = useState([])
   const [quantity, setQuantity] = useState(0)
+  const [lat, setLat] = useState([])
+  const [lon, setLon] = useState([])
 
 
   // TOKEM
@@ -111,9 +113,9 @@ function Evento() {
             setPositions(gpx.tracks[0].points)
             // console.log(gpx.tracks[0].points.map((p) => [p.lat, p.lon]))
 
-            const lat = gpx.tracks[0].points[0].lat
-            const lon = gpx.tracks[0].points[0].lon
-            setCenter([lat, lon])
+            setLat(gpx.tracks[0].points[0].lat)
+            setLon(gpx.tracks[0].points[0].lon)
+            setCenter([-28.666643856441578 , -49.372856989502914  ])
 
           })
 
@@ -159,6 +161,9 @@ function Evento() {
 
   }
 
+  console.log('lat', lat)
+  console.log('lon', lon)
+  console.log('center', [-28.666643856441578 , -49.372856989502914  ])
 
   return (
     <div>
@@ -259,7 +264,7 @@ function Evento() {
               <div className="col-12">
                 <h2 className='text-center'>Percurso</h2>
                 <MapContainer
-                  center={[-28.677547054209175, -49.37630051653647]}
+                  center={[-28.666643856441578 , -49.372856989502914]}
                   zoom={12}
                 >
                   <TileLayer

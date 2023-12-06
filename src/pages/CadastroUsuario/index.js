@@ -4,6 +4,7 @@ import { faEyeSlash, faEye } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { ModalConfirmacaoEmail } from '../../components/Modal/Modal';
 import { useNavigate } from 'react-router-dom';
+
 import Loading from '../../components/Loading'
 
 import './styles.css'
@@ -21,7 +22,10 @@ function CadastroUsuario() {
     const [fullName, setFullName] = useState('')
     const [showPassword, setShowPassword] = useState(false);
     const [showPasswordConfirm, setShowPasswordConfirm] = useState(false);
+    const [isValid, setIsValid] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
+    const [cadastroSucesso, setCadastroSucesso] = useState(false);
+
 
     const handlePasswordChange = (event) => {
         setPassword(event.target.value);
@@ -46,25 +50,34 @@ function CadastroUsuario() {
 
     async function createUser(e) {
         e.preventDefault()
-        setIsLoading(true)
-        const data = {
-            userName,
-            fullName,
-            password,
-        }
-        console.log(data)
-        try {
-            const response = await api.post('/auth/signup', data)
-            setIsLoading(false)
-            alert('Usuário Cadastrado com sucesso!')
-        } catch (error) {
-            alert(error)
-            // alert('Erro durante a gravação do usuário, tente novamente')
-            setIsLoading(false)
-        }
+        if (password !== passwordConfirm) {
+            alert('Senhas Diferentes')
+        } else {
+            setIsLoading(true)
+            const data = {
+                userName,
+                fullName,
+                password,
+            }
+            console.log(data)
+            try {
+                const response = await api.post('/auth/signup', data)
+                setIsLoading(false)
+                alert('Usuário Cadastrado com sucesso!')
+                setCadastroSucesso(true);
+                localStorage.setItem('username', userName)
 
 
-        // handleShowModal(true)
+            } catch (error) {
+                alert(error)
+                console.log('Erro durante a gravação do usuário, tente novamente')
+                setIsLoading(false)
+            }
+        }
+    }
+
+    if (cadastroSucesso) {
+        navigate('/login')
     }
 
     return (
@@ -184,11 +197,13 @@ function CadastroUsuario() {
                                             }
                                         </button>
                                     </div>
-                                    {passwordConfirm !== '' && password !== passwordConfirm && (
+
+                                    {passwordConfirm !== '' && password !== passwordConfirm ? (
+
                                         <div style={{ display: 'block' }} className="invalid-feedback">
                                             Senhas diferentes
                                         </div>
-                                    )}
+                                    ) : null}
                                 </div>
 
                                 <div className="d-grid mt-5 gap-3">

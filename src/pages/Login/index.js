@@ -17,14 +17,19 @@ import Lottie from 'lottie-react';
 import Loading from '../../components/Loading'
 
 function LoginScreen() {
-    const [username, setUserName] = useState('');
+
+    const userStorage = localStorage.getItem('username')
+
+
+    const [username, setUserName] = useState(userStorage !== '' ? userStorage : '');
     const [password, setPassword] = useState('');
     const [showModal, setShowModal] = useState(false);
     const [showPoliticaModal, setShowPoliticaModal] = useState(false);
     const [showAlterarSenhaModal, setShowAlterarSenhaModal] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
     const [isLoading, setIsLoading] = useState(false)
-
+    
+ 
 
     const navigate = useNavigate();
 
