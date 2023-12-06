@@ -45,8 +45,8 @@ function EditarEvento() {
         setTicketTitle(response.data.ticketTitle)
         setQuantity(response.data.quantity)
         setTickePrice(`${response.data.tickePrice}R$`)
-        setTickePriceStripe(response.data.startOfSales)
-        setStartOfSales(response.data.tickePriceStripe)
+        setTickePriceStripe(response.data.tickePriceStripe)
+        setStartOfSales(response.data.startOfSales)
         setEndOfSales(response.data.endOfSales)
         setMinPurchaseQuantity(response.data.minPurchaseQuantity)
         setMaxPurchaseQuantity(response.data.maxPurchaseQuantity)
@@ -117,56 +117,42 @@ function EditarEvento() {
 
   const inputRef = useRef()
 
-
-
-  
-
-
-
   async function editEvent(e) {
     e.preventDefault()
 
     // setIsLoading(true)
     const data = {
-      
-        id: 1,
-        locationName,
-        street ,
-        neighborhood ,
-        number ,
-        city ,
-        state ,
-        zipCode ,
-        complement,
-        eventName ,
-        description ,
-        startDate ,
-        endDate ,
-        ticketTitle ,
-        quantity,
-        tickePrice ,
-        tickePriceStripe ,
-        startOfSales ,
-        endOfSales ,
-        minPurchaseQuantity ,
-        maxPurchaseQuantity ,
-        eventStatus ,
-        startDateTime ,
-        endDateTime ,
-        startOfSalesTime ,
-        endOfSalesTime ,
-        map: {
-            id: 1,
-            description: "Mapa 1",
-            latitude: "-23.5505",
-            longitude: "-46.6333",
-            idGoogle: "google_id_1",
-        },
-        createdByUserId: 3
+      id,
+      locationName,
+      street ,
+      neighborhood ,
+      number ,
+      city ,
+      state ,
+      zipCode ,
+      complement,
+      eventName ,
+      description ,
+      startDate ,
+      endDate ,
+      ticketTitle ,
+      quantity,
+      tickePrice: tickePrice.replace('R$', ''),
+      tickePriceStripe ,
+      startOfSales ,
+      endOfSales ,
+      minPurchaseQuantity ,
+      maxPurchaseQuantity ,
+      eventStatus ,
+      startDateTime ,
+      endDateTime ,
+      startOfSalesTime ,
+      endOfSalesTime ,
+      createdByUserId: 3
       }
-
+      console.log(data)
     const headers = {
-      'Content-Type': 'multipart/form-data',
+      'Content-Type': 'application/json',
       'Authorization': `Bearer ${accessToken}`,
     };
 
