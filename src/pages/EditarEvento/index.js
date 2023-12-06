@@ -22,97 +22,104 @@ function EditarEvento() {
   const accessToken = localStorage.getItem('accessToken')
 
   const headers = {
-    'Content-Type': 'application/json',
+    'Content-Type': 'multipart/form-data',
     'Authorization': `Bearer ${accessToken}`,
   };
-
+  
   useEffect(() => {
     api.get('/api/event/v1/' + id, { headers })
-      .then(response => {
-
-        setLocationName(`${response.data.locationName}`);
-        setZipCode(`${response.data.zipCode}`);
-        setNumber(response.data.number);
-        setStreet(`${response.data.street}`);
-        setNeighborhood(`${response.data.neighborhood}`);
-        setCity(`${response.data.city}`);
-        setState(`${response.data.state}`);
-        setComplement(`${response.data.complement}`);
+    .then(response => {
+      console.log(response)
+        setLocationName(response.data.locationName)
+        setStreet(response.data.street)
+        setNeighborhood(response.data.neighborhood)
+        setNumber(response.data.number)
+        setCity(response.data.city)
+        setState(response.data.state)
+        setZipCode(response.data.zipCode)
+        setComplement(response.data.complement)
+        setEventName(response.data.eventName)
+        setDescription(response.data.description)
+        setStartDate(response.data.startDate)
+        setEndDate(response.data.endDate)
+        setTicketTitle(response.data.ticketTitle)
+        setQuantity(response.data.quantity)
+        setTickePrice(`${response.data.tickePrice}R$`)
+        setTickePriceStripe(response.data.startOfSales)
+        setStartOfSales(response.data.tickePriceStripe)
+        setEndOfSales(response.data.endOfSales)
+        setMinPurchaseQuantity(response.data.minPurchaseQuantity)
+        setMaxPurchaseQuantity(response.data.maxPurchaseQuantity)
+        setEventStatus(response.data.eventStatus)
+        setStartDateTime(response.data.startDateTime)
+        setEndDateTime(response.data.endDateTime)
+        setStartOfSalesTime(response.data.startOfSalesTime)
+        setEndOfSalesTime(response.data.endOfSalesTime)
+        setCreatedByUserId(response.data.createdByUserId)
+        setMap_description(response.data.map.description)
+        setLatitude(response.data.map.latitude)
+        setLongitude(response.data.map.longitude)
+        setIdGoogle(response.data.map.idGoogle)
         setIsLoading(false)
-        setEventName(`${response.data.eventName}`);
-        setDescription(`${response.data.description}`);
-        setStartDate(`${response.data.startDate.split('-').reverse().join('/')}`);
-        setStartDateTime(`${response.data.startDateTime}`)
-        setEndDate(`${response.data.endDate.split('-').reverse().join('/')}`);
-        setEndDateTime(`${response.data.endDateTime}`)
-        setTicketTitle(`${response.data.ticketTitle}`);
-        setQuantity(`${response.data.quantity}`);
-        setTickePrice(`${response.data.tickePrice}`);
-        setStartOfSales(`${response.data.startOfSales.split('-').reverse().join('/')}`);
-        setStartOfSalesTime(`${response.data.startOfSalesTime}`)
-        setEndOfSales(`${response.data.endOfSales.split('-').reverse().join('/')}`);
-        setEndOfSalesTime(`${response.data.endOfSalesTime}`)
-        setMinPurchaseQuantity(response.data.minPurchaseQuantity);
-        setMaxPurchaseQuantity(response.data.maxPurchaseQuantity);
-        setMap_description(`${response.data.map.description}`);
-        setLatitude(`${response.data.map.latitude}`);
-        setLongitude(`${response.data.map.longitude}`);
-        setfile(`${response.data.map.idGoogle}`)
-        // setResponsabilities(`${response.data.responsabilities}`)
-        setEventStatus(`${response.data.eventStatus}`);
-        setTickePriceStripe(`${response.data.tickePriceStripe}`);
+
       }).catch(e => console.log(e))
 
   }, [])
 
   // LOCAL DO EVENTO
-  const [locationName, setLocationName] = useState(`${eventData.locationName}`);
-  const [zipCode, setZipCode] = useState(`${eventData.zipCode}`);
-  const [number, setNumber] = useState(eventData.number);
-  const [street, setStreet] = useState(`${eventData.street}`);
-  const [neighborhood, setNeighborhood] = useState(`${eventData.neighborhood}`);
-  const [city, setCity] = useState(`${eventData.city}`);
-  const [state, setState] = useState(`${eventData.state}`);
-  const [complement, setComplement] = useState(`${eventData.complement}`);
+  const [createdByUserId, setCreatedByUserId] = useState();
+  const [locationName, setLocationName] = useState();
+  const [zipCode, setZipCode] = useState();
+  const [number, setNumber] = useState();
+  const [street, setStreet] = useState();
+  const [neighborhood, setNeighborhood] = useState();
+  const [city, setCity] = useState();
+  const [state, setState] = useState();
+  const [complement, setComplement] = useState();
   const [isLoading, setIsLoading] = useState(false)
-
+  
   // // SOBRE EVENTO
-  const [eventName, setEventName] = useState(`${eventData.eventName}`);
-  const [description, setDescription] = useState(`${eventData.description}`);
+  const [eventName, setEventName] = useState();
+  const [description, setDescription] = useState();
 
   // // DATA E HORÁRIO
-  const [startDate, setStartDate] = useState(`${eventData.startDate}`);
-  const [startDateTime, setStartDateTime] = useState(`${eventData.startDateTime}`)
+  const [startDate, setStartDate] = useState();
+  const [startDateTime, setStartDateTime] = useState()
 
-  const [endDate, setEndDate] = useState(`${eventData.endDate}`);
-  const [endDateTime, setEndDateTime] = useState(`${eventData.endDateTime}`)
+  const [endDate, setEndDate] = useState();
+  const [endDateTime, setEndDateTime] = useState()
 
   // INGRESSO 
-  const [ticketTitle, setTicketTitle] = useState(`${eventData.ticketTitle}`);
-  const [quantity, setQuantity] = useState(`${eventData.quantity}`);
-  const [tickePrice, setTickePrice] = useState(`${eventData.tickePrice}`);
+  const [ticketTitle, setTicketTitle] = useState();
+  const [quantity, setQuantity] = useState();
+  const [tickePrice, setTickePrice] = useState();
   // console.log(tickePricebd)
-  const [startOfSales, setStartOfSales] = useState(`${eventData.startOfSales}`);
-  const [startOfSalesTime, setStartOfSalesTime] = useState(`${eventData.startOfSalesTime}`)
-  const [endOfSales, setEndOfSales] = useState(`${eventData.endOfSales}`);
-  const [endOfSalesTime, setEndOfSalesTime] = useState(`${eventData.endOfSalesTime}`)
+  const [startOfSales, setStartOfSales] = useState();
+  const [startOfSalesTime, setStartOfSalesTime] = useState()
+  const [endOfSales, setEndOfSales] = useState();
+  const [endOfSalesTime, setEndOfSalesTime] = useState()
 
   // Quantidade permitida por compra
-  const [minPurchaseQuantity, setMinPurchaseQuantity] = useState(eventData.minPurchaseQuantity);
-  const [maxPurchaseQuantity, setMaxPurchaseQuantity] = useState(eventData.maxPurchaseQuantity);
+  const [minPurchaseQuantity, setMinPurchaseQuantity] = useState();
+  const [maxPurchaseQuantity, setMaxPurchaseQuantity] = useState();
 
   // DIVULGAÇÃO
-  const [map_description, setMap_description] = useState('`${eventData.map.description}`');
-  const [latitude, setLatitude] = useState('`${eventData.map.latitude}`');
-  const [longitude, setLongitude] = useState('`${eventData.map.longitude}`');
-  const [file, setfile] = useState('`${eventData.map.idGoogle')
+  const [map_description, setMap_description] = useState();
+  const [latitude, setLatitude] = useState();
+  const [longitude, setLongitude] = useState();
+  const [file, setfile] = useState()
+  const [idGoogle, setIdGoogle] = useState()
 
   // RESPONSABILIDADES
   // const [responsabilities, setResponsabilities] = useState(`${eventData.responsabilities}`)
-  const [eventStatus, setEventStatus] = useState(`${eventData.eventStatus}`);
-  const [tickePriceStripe, setTickePriceStripe] = useState(`${eventData.tickePriceStripe}`);
+  const [eventStatus, setEventStatus] = useState();
+  const [tickePriceStripe, setTickePriceStripe] = useState();
 
   const inputRef = useRef()
+
+
+
+  
 
 
 
@@ -121,39 +128,43 @@ function EditarEvento() {
 
     // setIsLoading(true)
     const data = {
-      id: id, 
-      city,
-      complement,
-      description,
-      endDate: endDate.split('/').reverse().join('-'),
-      endDateTime,
-      endOfSales: endOfSales.split('/').reverse().join('-'),
-      endOfSalesTime,
-      eventName,
-      eventStatus: 1,
-      locationName,
-      file,
-      maxPurchaseQuantity,
-      minPurchaseQuantity,
-      neighborhood,
-      number,
-      quantity,
-      startDate: startDate.split('/').reverse().join('-'),
-      startDateTime,
-      startOfSales: startOfSales.split('/').reverse().join('-'),
-      startOfSalesTime,
-      state,
-      street,
-      tickePrice: tickePrice.replace('R$ ', '').replace(',', '.'),
-      tickePriceStripe,
-      ticketTitle,
-      zipCode,
-      latitude,
-      longitude,
-      map_description: file.name
-    }
+      
+        id: 1,
+        locationName,
+        street ,
+        neighborhood ,
+        number ,
+        city ,
+        state ,
+        zipCode ,
+        complement,
+        eventName ,
+        description ,
+        startDate ,
+        endDate ,
+        ticketTitle ,
+        quantity,
+        tickePrice ,
+        tickePriceStripe ,
+        startOfSales ,
+        endOfSales ,
+        minPurchaseQuantity ,
+        maxPurchaseQuantity ,
+        eventStatus ,
+        startDateTime ,
+        endDateTime ,
+        startOfSalesTime ,
+        endOfSalesTime ,
+        map: {
+            id: 1,
+            description: "Mapa 1",
+            latitude: "-23.5505",
+            longitude: "-46.6333",
+            idGoogle: "google_id_1",
+        },
+        createdByUserId: 3
+      }
 
-    console.log(data)
     const headers = {
       'Content-Type': 'multipart/form-data',
       'Authorization': `Bearer ${accessToken}`,
@@ -162,7 +173,7 @@ function EditarEvento() {
     try {
       const response = await api.put('/api/event/v1', data, { headers })
       setIsLoading(false)
-      console.log(response.data)
+      console.log(response)
       alert('Evento Cadastrado com sucesso!')
     } catch (error) {
       setIsLoading(false)

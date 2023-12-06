@@ -11,7 +11,7 @@ function Header() {
   return (
     <Navbar expand="lg" className="px-3 cor" >
       <Container fluid >          
-      <Navbar.Brand href="/inicio" className='logo-toggle' style={{ color: '#3B8686'}}>Ponto Trilha</Navbar.Brand>
+      <Navbar.Brand href="/inicio" className='logo-toggle' >Ponto Trilha</Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav ">
           <Navbar.Brand href="/inicio" className='logo-inseide-toggle'>Ponto Trilha</Navbar.Brand>

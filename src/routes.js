@@ -26,7 +26,7 @@ export default function AppRoutes(){
                 <Route path="meus-ingressos" element={ <Ingressos /> } />
                 <Route path="meus-eventos" element={ <MeusEventos /> } />
                 <Route path="evento/:id" element={ <Evento /> } />
-                <Route path="evento/:id/verificacao-pagamento" element={ <VerificacaoPagamento /> } />
+                <Route path="/verificacao-pagamento/:id/:quantity/:userName" element={ <VerificacaoPagamento /> } />
                 <Route path="editar-evento/:id" element={ <EditarEvento /> } />
                 
             </Routes>
