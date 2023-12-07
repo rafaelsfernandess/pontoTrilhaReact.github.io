@@ -10,11 +10,12 @@ import exemplo from '../../assets/banner.jpg'
 import { faClock, faCalendarCheck, faCalendarXmark } from '@fortawesome/free-regular-svg-icons'
 import { faLocationDot, faPrint } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { Link,  } from 'react-router-dom';
+import { Link, } from 'react-router-dom';
 
 function Home() {
   const [eventsData, setEventsData] = useState([])
   const accessToken = localStorage.getItem('accessToken')
+  const [showMap, setShowMap] = useState(false);
 
   const headers = {
     'Authorization': `Bearer ${accessToken}`,
@@ -24,6 +25,14 @@ function Home() {
     const dateTime = new Date(dateTimeString);
     return `${dateTime.toLocaleDateString('pt-BR')} - ${dateTime.toLocaleTimeString('pt-BR')}`;
   };
+
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      setShowMap(true);
+    }, 2500);
+
+    return () => clearTimeout(timeout);
+  }, []);
 
   useEffect(() => {
     api('/api/event/v1', { headers })
@@ -38,7 +47,6 @@ function Home() {
         console.log(e)
       })
   }, [])
-  console.log(eventsData[0].img)
   return (
     <div>
       <Header />
@@ -50,8 +58,12 @@ function Home() {
               eventsData.map(event => (
 
                 <div className="col" key={event.id} >
-                  <Link to={"/evento/"+event.id} target="_blank" className="card" >
-                    <img src={`${event.img}`} className="card-img-top" alt="..." style={{maxWidth: 100, justifySelf: 'center', alignSelf: 'center'}}/>
+                  <Link to={"/evento/" + event.id} target="_blank" className="card" >
+                    {showMap ? (
+                      <img src={`${event.img}`} className="card-img-top" alt="..." style={{ maxWidth: 100, justifySelf: 'center', alignSelf: 'center' }} />
+                    ) : (
+                      <p>Carregando...</p>
+                    )}
                     <div className="card-body">
                       <h5 className="card-title">{event.eventName}</h5>
                     </div>
