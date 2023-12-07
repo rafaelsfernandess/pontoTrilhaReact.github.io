@@ -1,0 +1,16 @@
+{
+  "files": {
+    "main.css": "/pontoTrilhaReact.github.io/static/css/main.b49eb184.css",
+    "main.js": "/pontoTrilhaReact.github.io/static/js/main.03762dfb.js",
+    "static/js/787.3acbab67.chunk.js": "/pontoTrilhaReact.github.io/static/js/787.3acbab67.chunk.js",
+    "static/media/banner.jpg": "/pontoTrilhaReact.github.io/static/media/banner.3885988b38a569eb8be0.jpg",
+    "index.html": "/pontoTrilhaReact.github.io/index.html",
+    "main.b49eb184.css.map": "/pontoTrilhaReact.github.io/static/css/main.b49eb184.css.map",
+    "main.03762dfb.js.map": "/pontoTrilhaReact.github.io/static/js/main.03762dfb.js.map",
+    "787.3acbab67.chunk.js.map": "/pontoTrilhaReact.github.io/static/js/787.3acbab67.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.b49eb184.css",
+    "static/js/main.03762dfb.js"
+  ]
+}
