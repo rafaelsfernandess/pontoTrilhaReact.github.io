@@ -29,7 +29,6 @@ function VerificacaoPagamento() {
   function comprar() {
     api.post('/api/ticket/v1', data, { headers })
       .then(response => {
-        console.log(response.data.urlPayment)
         window.location.href = response.data.urlPayment
       })
       .catch(e => console.log(e))

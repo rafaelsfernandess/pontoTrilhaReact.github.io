@@ -41,7 +41,6 @@ function CadastroEvento() {
   const [ticketTitle, setTicketTitle] = useState('');
   const [quantity, setQuantity] = useState();
   const [tickePrice, setTickePrice] = useState();
-  // console.log(tickePricebd)
   const [startOfSales, setStartOfSales] = useState('01/01/0001');
   const [startOfSalesTime, setStartOfSalesTime] = useState('01:01')
   const [endOfSales, setEndOfSales] = useState('01/01/0001');
@@ -138,7 +137,6 @@ function CadastroEvento() {
       img: imgs
     }
 
-    console.log(data)
     const headers = {
       'Content-Type': 'multipart/form-data',
       'Authorization': `Bearer ${accessToken}`,
@@ -147,7 +145,6 @@ function CadastroEvento() {
     try {
       const response = await api.post('/api/event/v1', data, { headers })
       setIsLoading(false)
-      console.log(response.data)
       alert('Evento Cadastrado com sucesso!')
     } catch (error) {
       setIsLoading(false)
@@ -221,7 +218,6 @@ function CadastroEvento() {
   const [ imgs, setImgs] = useState('')
   const handleImg = (e)=>{
    
-    console.log(e)
     const data = new FileReader()
     data.addEventListener('load',()=>{
       setImgs(data.result)

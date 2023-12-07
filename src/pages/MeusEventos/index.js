@@ -26,7 +26,6 @@ function MeusEventos() {
     api.get('/api/event/v1/userevents/' + username, { headers })
       .then(response => {
         setEventsData(response.data)
-        console.log(response.data)
       })
       .catch(error => {
         console.log(error)

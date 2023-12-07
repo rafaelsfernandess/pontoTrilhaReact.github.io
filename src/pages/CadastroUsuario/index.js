@@ -59,7 +59,6 @@ function CadastroUsuario() {
                 fullName,
                 password,
             }
-            console.log(data)
             try {
                 const response = await api.post('/auth/signup', data)
                 setIsLoading(false)

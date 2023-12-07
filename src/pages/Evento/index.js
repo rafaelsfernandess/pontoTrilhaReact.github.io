@@ -136,7 +136,6 @@ function Evento() {
         console.log(error)
       })
   }, [])
-  console.log(img)
 
   const chartData = {
     labels: distancia, // this is test data

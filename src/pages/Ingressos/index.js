@@ -23,16 +23,26 @@ function MeusEventos() {
   };
 
   useEffect(() => {
-    api.get('/api/event/v1/userevents/' + username, { headers })
-      .then(response => {
-        setEventsData(response.data)
-        console.log(response.data)
-      })
-      .catch(error => {
-        console.log(error)
-      })
-  }, [])
-
+    const fetchUserTickets = async () => {
+      try {
+        const userTicketsResponse = await api.get(`/api/ticket/v1/usertickets/${username}`, { headers });
+        const userTickets = userTicketsResponse.data;
+  
+        const eventDetailsPromises = userTickets.map(ticket => {
+          return api.get(`/api/ticket/v1/usertickets/${ticket.eventId}`, { headers });
+        });
+  
+        const eventDetailsResponses = await Promise.all(eventDetailsPromises);
+        const eventDetails = eventDetailsResponses.map(response => response.data);
+  
+        setEventsData(eventDetails);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+  
+    fetchUserTickets();
+  }, [username, headers]);
 
   return (
     <div>
@@ -51,12 +61,7 @@ function MeusEventos() {
                         <li>
                           <h5 className="card-title">{event.eventName}</h5>
                         </li>
-                        <li className="list-group-item ">
-                          {<FontAwesomeIcon icon={faClock} />}<span style={{ marginLeft: 10 }}>{`${event.startDate.split('-').reverse().join('/')}`}</span>
-                        </li>
-                        <li className="list-group-item ">
-                          {<FontAwesomeIcon icon={faLocationDot} />}<span style={{ marginLeft: 10 }}>{`${event.city}, ${event.state}`}</span>
-                        </li>
+                       
                       </ul>
 
                     </div>

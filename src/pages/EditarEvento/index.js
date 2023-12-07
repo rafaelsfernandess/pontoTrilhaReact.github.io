@@ -25,11 +25,10 @@ function EditarEvento() {
     'Content-Type': 'multipart/form-data',
     'Authorization': `Bearer ${accessToken}`,
   };
-  
+
   useEffect(() => {
     api.get('/api/event/v1/' + id, { headers })
-    .then(response => {
-      console.log(response)
+      .then(response => {
         setLocationName(response.data.locationName)
         setStreet(response.data.street)
         setNeighborhood(response.data.neighborhood)
@@ -60,6 +59,9 @@ function EditarEvento() {
         setLatitude(response.data.map.latitude)
         setLongitude(response.data.map.longitude)
         setIdGoogle(response.data.map.idGoogle)
+        setDifficulty(response.data.difficulty)
+        setModality(response.data.modality)
+        setImg(response.data.img)
         setIsLoading(false)
 
       }).catch(e => console.log(e))
@@ -77,10 +79,13 @@ function EditarEvento() {
   const [state, setState] = useState();
   const [complement, setComplement] = useState();
   const [isLoading, setIsLoading] = useState(false)
-  
+
   // // SOBRE EVENTO
   const [eventName, setEventName] = useState();
   const [description, setDescription] = useState();
+  const [difficulty, setDifficulty] = useState('facil');
+  const [modality, setModality] = useState('offroad');
+  const [img, setImg] = useState('');
 
   // // DATA E HORÁRIO
   const [startDate, setStartDate] = useState();
@@ -124,33 +129,36 @@ function EditarEvento() {
     const data = {
       id,
       locationName,
-      street ,
-      neighborhood ,
-      number ,
-      city ,
-      state ,
-      zipCode ,
+      street,
+      neighborhood,
+      number,
+      city,
+      state,
+      zipCode,
       complement,
-      eventName ,
-      description ,
-      startDate ,
-      endDate ,
-      ticketTitle ,
+      eventName,
+      description,
+      startDate,
+      endDate,
+      ticketTitle,
       quantity,
       tickePrice: tickePrice.replace('R$', ''),
-      tickePriceStripe ,
-      startOfSales ,
-      endOfSales ,
-      minPurchaseQuantity ,
-      maxPurchaseQuantity ,
-      eventStatus ,
-      startDateTime ,
-      endDateTime ,
-      startOfSalesTime ,
-      endOfSalesTime ,
+      tickePriceStripe,
+      startOfSales,
+      endOfSales,
+      minPurchaseQuantity,
+      maxPurchaseQuantity,
+      eventStatus,
+      startDateTime,
+      endDateTime,
+      startOfSalesTime,
+      endOfSalesTime,
+      difficulty,
+      modality,
+      img: imgs,
       createdByUserId: 3
-      }
-      console.log(data)
+    }
+    
     const headers = {
       'Content-Type': 'application/json',
       'Authorization': `Bearer ${accessToken}`,
@@ -159,7 +167,6 @@ function EditarEvento() {
     try {
       const response = await api.put('/api/event/v1', data, { headers })
       setIsLoading(false)
-      console.log(response)
       alert('Evento Cadastrado com sucesso!')
     } catch (error) {
       setIsLoading(false)
@@ -231,7 +238,16 @@ function EditarEvento() {
   };
 
 
+  const [imgs, setImgs] = useState('')
+  const handleImg = (e) => {
 
+    const data = new FileReader()
+    data.addEventListener('load', () => {
+      setImgs(data.result)
+    })
+    data.readAsDataURL(e.target.files[0])
+    setImg(e.target.files[0].name)
+  }
 
 
   return (
@@ -312,6 +328,30 @@ function EditarEvento() {
                 <textarea rows="15" type="text" className="form-control" value={description} id="descricao" placeholder="Descrição" onChange={(text) => setDescription(text.target.value)} />
                 <label htmlFor="descricao" className="event-label">Descrição</label>
               </div>
+
+              <div className="form-floating col-3">
+                <select type="text" className="form-control" value={modality} id="modalidade" name="modalidade" onChange={(text) => setModality(text.target.value)} placeholder="Modalidade" >
+                  <option value="offroad">Off-Road</option>
+                  <option value="caminhada">Caminhada</option>
+                  <option value="bike">Bike</option>
+                </select>
+                <label htmlFor="modalidade" className="event-label">Modalidade</label>
+              </div>
+
+              <div className="form-floating col-3">
+                <select type="text" className="form-control" value={difficulty} id="dificuldade" name="dificuldade" onChange={(text) => setDifficulty(text.target.value)} placeholder="dificuldade" >
+                  <option value="facil">Fácil</option>
+                  <option value="medio">Médio</option>
+                  <option value="dificil">Difícil</option>
+                </select>
+                <label htmlFor="dificuldade" className="event-label">dificuldade</label>
+              </div>
+
+              <div className="col-12">
+                <label htmlFor="img">Escolha a imagem para divulgação</label>
+                <input type='file' required className="form-control" id="img" placeholder="img" onChange={handleImg} />
+              </div>
+              <img src={imgs} style={{ width: '100%' }} />
 
 
               <h2 className='fs-4 text mt-5'>Data e horário</h2>
