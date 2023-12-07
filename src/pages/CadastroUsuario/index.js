@@ -77,7 +77,7 @@ function CadastroUsuario() {
     }
 
     if (cadastroSucesso) {
-        navigate('/login')
+        navigate('login')
     }
 
     return (

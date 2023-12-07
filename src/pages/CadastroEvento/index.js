@@ -26,6 +26,9 @@ function CadastroEvento() {
   // // SOBRE EVENTO
   const [eventName, setEventName] = useState('');
   const [description, setDescription] = useState('');
+  const [difficulty, setDifficulty] = useState('facil');
+  const [modality, setModality] = useState('offroad');
+  const [img, setImg] = useState('');
 
   // // DATA E HORÁRIO
   const [startDate, setStartDate] = useState('01/01/0001');
@@ -68,35 +71,34 @@ function CadastroEvento() {
   async function createEvent(e) {
     e.preventDefault()
 
-    if( city =='' ||
-        complement =='' ||
-        description =='' ||
-        endDate =='' ||
-        endDateTime =='' ||
-        endOfSales =='' ||
-        endOfSalesTime =='' ||
-        eventName =='' ||
-        eventStatus =='' ||
-        locationName =='' ||
-        file =='' ||
-        maxPurchaseQuantity =='' ||
-        minPurchaseQuantity =='' ||
-        neighborhood =='' ||
-        number =='' ||
-        quantity =='' ||
-        startDate =='' ||
-        startDateTime =='' ||
-        startOfSales =='' ||
-        startOfSalesTime =='' ||
-        state =='' ||
-        street =='' ||
-        tickePrice =='' ||
-        tickePriceStripe =='' ||
-        ticketTitle =='' ||
-        zipCode =='' ||
-        latitude =='' ||
-        longitude =='' ||
-        map_description =='' ) {
+    if (city == '' ||
+      complement == '' ||
+      description == '' ||
+      endDate == '' ||
+      endDateTime == '' ||
+      endOfSales == '' ||
+      endOfSalesTime == '' ||
+      eventName == '' ||
+      eventStatus == '' ||
+      locationName == '' ||
+      file == '' ||
+      maxPurchaseQuantity == '' ||
+      minPurchaseQuantity == '' ||
+      neighborhood == '' ||
+      number == '' ||
+      quantity == '' ||
+      startDate == '' ||
+      startDateTime == '' ||
+      startOfSales == '' ||
+      startOfSalesTime == '' ||
+      state == '' ||
+      street == '' ||
+      tickePrice == '' ||
+      ticketTitle == '' ||
+      zipCode == '' ||
+      latitude == '' ||
+      longitude == '' ||
+      map_description == '') {
       alert('Por favor, preencha todos os campos obrigatórios.');
     }
 
@@ -125,12 +127,15 @@ function CadastroEvento() {
       state,
       street,
       tickePrice: tickePrice.replace('R$ ', '').replace(',', '.'),
-      tickePriceStripe,
+      tickePriceStripe: tickePrice,
       ticketTitle,
       zipCode,
-      latitude,
-      longitude,
-      map_description: file.name
+      latitude: '1',
+      longitude: '1',
+      map_description: 15,
+      difficulty,
+      modality,
+      img: imgs
     }
 
     console.log(data)
@@ -213,10 +218,17 @@ function CadastroEvento() {
     }
   };
 
-
-
-
-
+  const [ imgs, setImgs] = useState('')
+  const handleImg = (e)=>{
+   
+    console.log(e)
+    const data = new FileReader()
+    data.addEventListener('load',()=>{
+      setImgs(data.result)
+    })
+    data.readAsDataURL(e.target.files[0])
+    setImg(e.target.files[0].name)
+  }
   return (
     <div>
       {isLoading &&
@@ -294,6 +306,31 @@ function CadastroEvento() {
                 <textarea required rows="15" type="text" className="form-control" value={description} id="descricao" placeholder="Descrição" onChange={(text) => setDescription(text.target.value)} />
                 <label htmlFor="descricao" className="event-label">Descrição</label>
               </div>
+              
+
+              <div className="form-floating col-3">
+                <select  type="text" className="form-control" value={modality} id="modalidade" name="modalidade" onChange={(text) => setModality(text.target.value)} placeholder="Modalidade" >
+                  <option value="offroad">Off-Road</option>
+                  <option value="caminhada">Caminhada</option>
+                  <option value="bike">Bike</option>
+                </select>
+                <label htmlFor="modalidade" className="event-label">Modalidade</label>
+              </div>
+
+              <div className="form-floating col-3">
+                <select  type="text" className="form-control" value={difficulty} id="dificuldade" name="dificuldade" onChange={(text) => setDifficulty(text.target.value)} placeholder="dificuldade" >
+                  <option value="facil">Fácil</option>
+                  <option value="medio">Médio</option>
+                  <option value="dificil">Difícil</option>
+                </select>
+                <label htmlFor="dificuldade" className="event-label">dificuldade</label>
+              </div>
+
+              <div className="col-12">
+                <label htmlFor="img">Escolha a imagem para divulgação</label>
+                <input type='file' required className="form-control" id="img" placeholder="img" onChange={handleImg} />
+              </div>
+              <img src={imgs} style={{width: '100%'}}/>
 
 
               <h2 className='fs-4 text mt-5'>Data e horário</h2>
@@ -370,7 +407,7 @@ function CadastroEvento() {
               </div>
               <div className="form-floating col-12 col-md-3">
                 <InputNumberFormat
-                required
+                  required
                   className="form-control"
                   placeholder='R$'
                   value={tickePrice}
@@ -401,8 +438,8 @@ function CadastroEvento() {
               <div className="form-floating col-12 col-md-6">
                 <InputMask
                   required
-                  mask="dd/mm/aaaa"
-                  replacement={{ d: /\d/, m: /\d/, a: /\d/ }}
+                  mask="hh:mm"
+                  replacement={{ h: /\d/, m: /\d/, }}
                   value={startOfSalesTime}
                   onChange={(text) => setStartOfSalesTime(text.target.value)}
                   className="form-control"

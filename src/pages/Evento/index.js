@@ -27,6 +27,7 @@ import {
 import { Line } from 'react-chartjs-2';
 import './styles.css';
 import JSZip from 'jszip'
+import axios from 'axios'
 
 ChartJS.register(
   CategoryScale,
@@ -63,14 +64,13 @@ function Evento() {
   const [elevacao, setElevacao] = useState([])
   const [distancia, setDistancia] = useState([])
   const [quantity, setQuantity] = useState(0)
-  const [lat, setLat] = useState([])
-  const [lon, setLon] = useState([])
-
+  const [ img, setImg ]= useState('')
   const [mapPoints, setMapPoints] = useState([])
   const [center, setCenter] = useState([0, 0]);
   const [showMap, setShowMap] = useState(false);
   const [gpxGeral, setGpxGeral] = useState(false);
-
+  const [distanciaTotal, setDistanciaTotal] =useState('')
+  const [elevacaoMaior, setElevacaoMaior] = useState('')
   // TOKEM
   const accessToken = localStorage.getItem('accessToken')
   const userName = localStorage.getItem('username')
@@ -107,14 +107,13 @@ function Evento() {
       setState(response.data.state)
       setComplement(response.data.complement)
       setIdFile(response.data.map.idGoogle)
-
+      setImg(response.data.img)
 
       let fileResponse = await api.get('/api/files/v1/content/' + response.data.map.idGoogle, { headers, responseType: 'text' })
       const valueSplit = fileResponse.data.split('<?xml version="1.0" encoding="UTF-8"?>')
       var gpx = new GpxParser()
       gpx.parse(valueSplit[1])
       setPositions(gpx.tracks[0].points)
-      // console.log(gpx.tracks[0].points.map((p) => [p.lat, p.lon]))
 
       setMapPoints(gpx.tracks[0].points)
       const { lat, lon } = gpx.tracks[0].points[0];
@@ -124,8 +123,10 @@ function Evento() {
       // setElevacao()
 
       setDistancia(gpx.tracks[0].distance.cumul)
-      setGpxGeral(gpx.tracks[0])
-      console.log(gpx.tracks[0])
+      setDistanciaTotal(gpxGeral.distance.total)
+      setElevacaoMaior(gpxGeral.elevation.max)
+
+
     }
 
     fetchMyAPI()
@@ -135,9 +136,10 @@ function Evento() {
         console.log(error)
       })
   }, [])
+  console.log(img)
 
   const chartData = {
-    labels: distancia , // this is test data
+    labels: distancia, // this is test data
     datasets: [{
       data: elevacao, // this is test data
       borderColor: 'rgba(0,0,0)',
@@ -155,13 +157,12 @@ function Evento() {
 
   function ticketQuantity(e) {
     e.preventDefault()
-    console.log(quantity)
   }
 
   useEffect(() => {
     const timeout = setTimeout(() => {
       setShowMap(true);
-    }, 2000); // 10 segundos em milissegundos
+    }, 2500);
 
     return () => clearTimeout(timeout);
   }, []);
@@ -174,9 +175,9 @@ function Evento() {
       <div style={{}}>
 
       </div>
-      <div className="header" style={{ backgroundImage: `url(${exemplo})` }}>
+      <div className="header" style={{ backgroundImage: `url(${img})` }}>
         <div className='blur-event'>
-          <div className="header-img" style={{ backgroundImage: `url(${exemplo})` }} >
+          <div className="header-img" style={{ backgroundImage: `url(${img})` }} >
           </div>
         </div>
       </div>
@@ -255,6 +256,11 @@ function Evento() {
             <div className="col-12 mt-5">
               <div className='bg-secondary-subtle p-2'>
                 <h2 className='text-center'>Tempo</h2>
+                <ul>
+                  <li>Temperatura atual:</li>
+                  <li>Temperatura máxima:</li>
+                  <li>Temperatura minima:</li>
+                </ul>
               </div>
             </div>
 
@@ -268,13 +274,14 @@ function Evento() {
                 {showMap ? (
                   <div>
                     <div className="container-map">
-                    <div className='p-1  box-map ' >
-                      <p className='text-light' > Distancia aproximada do percurso: {parseInt(gpxGeral.distance.total)} Km</p>
-                      <p className='text-light' > Ponto mais alto aproximado: {parseInt(gpxGeral.elevation.max)} m</p>
-                    </div>
+                      <div className='p-1  box-map ' >
+                        <p className='text-light' > Distancia aproximada do percurso: {parseInt(distanciaTotal)} Km</p>
+                        <p className='text-light' > Ponto mais alto aproximado: {parseInt(elevacaoMaior)} m</p>
+                      </div>
+
                       <MapContainer
                         center={center}
-                        zoom={12}
+                        zoom={15}
                       >
                         <TileLayer
                           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
@@ -285,7 +292,7 @@ function Evento() {
                           positions={mapPoints.map(p => [p.lat, p.lon])}
                         />
                       </MapContainer>
-                   
+
                     </div>
                   </div>
                 ) : (

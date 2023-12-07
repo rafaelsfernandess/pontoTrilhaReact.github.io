@@ -25,12 +25,10 @@ function VerificacaoPagamento() {
     quantity
   };
 
-  console.log(data)
-
   function comprar() {
     api.post('/api/ticket/v1', data, { headers })
       .then(response => {
-        console.log(response)
+        console.log(response.data)
       })
       .catch(e => console.log(e))
 
@@ -41,32 +39,33 @@ function VerificacaoPagamento() {
 
       .then(response => {
         setEventsData(response.data)
-
       })
       .catch(error => {
         console.log(error)
       })
   }, [])
 
-  console.log(eventsData)
   return (
     <div>
       <Header />
-      <div >
-        <h1 className='text-center fs-2'>Revisão do pedido</h1>
-      </div>
-      <div className="container">
-        <ul>
-          <li>{eventsData.eventName}</li>
-          <li>{eventsData.startDate} - {eventsData.startDateTime}</li>
-          <li>{eventsData.locationName}</li>
-          <li>Ingressos {eventsData.ticketTitle}: </li>
-          <li>Valor do ingresso unitario: R$ {eventsData.tickePrice}</li>
-          <li>Quantidade solicitada:{quantity}</li>
-          <li>Valor total da compra: R$ {quantity * eventsData.tickePrice}</li>
-        </ul>
-        <button onClick={comprar} className='btn btn-success'>Confirmar pedido</button>
-      </div>
+      <main className="teste-body">
+        <div >
+          <h1 className='text-center fs-2 mt-5'>Revisão do pedido</h1>
+        </div>
+        <div className="container d-flex align-items-center flex-column rounded">
+          <ul className='mt-5 fs-5 bg-info rounded p-3'>
+            
+            <li>Nome do evento: <b>{eventsData.eventName}</b></li>
+            <li>Dia de inicio: <b>{eventsData.startDate} - {eventsData.startDateTime}</b></li>
+            <li>Nome do local: <b>{eventsData.locationName}</b></li>
+            <li>Ingressos: <b>{eventsData.ticketTitle}</b></li>
+            <li>Valor do ingresso unitario: <b>R$ {eventsData.tickePrice}</b></li>
+            <li>Quantidade solicitada:<b> {quantity}</b></li>
+            <li>Valor total da compra:<b> R$ {quantity * eventsData.tickePrice}</b></li>
+          </ul>
+          <button onClick={comprar} className='btn btn-success mb-5 mt-3'>Confirmar pedido</button>
+        </div>
+      </main>
       <Footer />
     </div>
 

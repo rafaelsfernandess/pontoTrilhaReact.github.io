@@ -38,7 +38,7 @@ function Home() {
         console.log(e)
       })
   }, [])
-
+  console.log(eventsData[0].img)
   return (
     <div>
       <Header />
@@ -51,7 +51,7 @@ function Home() {
 
                 <div className="col" key={event.id} >
                   <Link to={"/evento/"+event.id} target="_blank" className="card" >
-                    <img src={exemplo} className="card-img-top" alt="..." />
+                    <img src={`${event.img}`} className="card-img-top" alt="..." style={{maxWidth: 100, justifySelf: 'center', alignSelf: 'center'}}/>
                     <div className="card-body">
                       <h5 className="card-title">{event.eventName}</h5>
                     </div>
