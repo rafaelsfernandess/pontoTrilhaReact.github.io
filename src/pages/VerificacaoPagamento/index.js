@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Link, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 
 import './styles.css';
 
@@ -14,6 +14,7 @@ function VerificacaoPagamento() {
   const accessToken = localStorage.getItem('accessToken')
 
   const [eventsData, setEventsData] = useState([])
+  const navigate = useNavigate();
 
   const headers = {
     'Content-Type': 'multipart/form-data',
@@ -28,7 +29,8 @@ function VerificacaoPagamento() {
   function comprar() {
     api.post('/api/ticket/v1', data, { headers })
       .then(response => {
-        console.log(response.data)
+        console.log(response.data.urlPayment)
+        window.location.href = response.data.urlPayment
       })
       .catch(e => console.log(e))
 
