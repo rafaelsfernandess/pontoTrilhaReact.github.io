@@ -12,6 +12,7 @@ import MeusEventos from "./pages/MeusEventos";
 import Evento from "./pages/Evento";
 import VerificacaoPagamento from "./pages/VerificacaoPagamento";
 import EditarEvento from "./pages/EditarEvento";
+import Teste from "./pages/Evento/teste";
 export default function AppRoutes(){
     return(
         <BrowserRouter >
@@ -28,6 +29,7 @@ export default function AppRoutes(){
                 <Route path="evento/:id" element={ <Evento /> } />
                 <Route path="/verificacao-pagamento/:id/:quantity/:userName" element={ <VerificacaoPagamento /> } />
                 <Route path="editar-evento/:id" element={ <EditarEvento /> } />
+                <Route path="teste" element={ <Teste /> } />
                 
             </Routes>
         </BrowserRouter>

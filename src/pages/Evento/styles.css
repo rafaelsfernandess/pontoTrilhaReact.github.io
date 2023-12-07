@@ -33,7 +33,6 @@
 
 .leaflet-container {
     height: 500px;
-
 }
 
 .quantity-input {
@@ -57,3 +56,23 @@
     background-color: rgb(218, 218, 218);
     font-weight: bold;
 }
+.container-map {
+    position: relative;
+  }
+  
+  .box-map {
+    position: absolute;
+    bottom: 0px; /* ajuste a posição vertical conforme necessário */
+    left: 0px; /* ajuste a posição horizontal conforme necessário */
+    z-index: 1000!important; /* certifique-se de que o z-index seja maior que o do mapa */
+    /* outros estilos conforme desejado */
+    border-radius: 0px 20px 0px 0px!important;
+    background-color: rgb(138, 137, 137);
+    padding: 10px!important;
+
+  }
+  .box-map >p{
+    margin: 0px;
+    font-size: 16px;
+    
+  }

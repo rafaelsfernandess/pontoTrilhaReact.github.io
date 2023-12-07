@@ -21,6 +21,7 @@ import {
   Title,
   Tooltip,
   Legend,
+  LineController,
 } from 'chart.js';
 
 import { Line } from 'react-chartjs-2';
@@ -32,10 +33,10 @@ ChartJS.register(
   LinearScale,
   PointElement,
   LineElement,
-  Title,
   Tooltip,
-  Legend
+  LineController
 );
+
 
 function Evento() {
 
@@ -61,11 +62,14 @@ function Evento() {
   const [positions, setPositions] = useState([])
   const [elevacao, setElevacao] = useState([])
   const [distancia, setDistancia] = useState([])
-  const [center, setCenter] = useState([])
   const [quantity, setQuantity] = useState(0)
   const [lat, setLat] = useState([])
   const [lon, setLon] = useState([])
 
+  const [mapPoints, setMapPoints] = useState([])
+  const [center, setCenter] = useState([0, 0]);
+  const [showMap, setShowMap] = useState(false);
+  const [gpxGeral, setGpxGeral] = useState(false);
 
   // TOKEM
   const accessToken = localStorage.getItem('accessToken')
@@ -77,93 +81,91 @@ function Evento() {
   };
 
   useEffect(() => {
-    api.get('/api/event/v1/' + id, { headers })
 
-      .then(response => {
-        setEventsData(response.data)
+    async function fetchMyAPI() {
+      let response = await api.get('/api/event/v1/' + id, { headers })
+      setEventsData(response.data)
 
-        let dia = response.data.startDate.split('T')
-        dia = dia[0].split('-').reverse().join('/')
+      let dia = response.data.startDate.split('T')
+      dia = dia[0].split('-').reverse().join('/')
 
-        setStartDate(response.data.startDate.split('-').reverse().join('/'))
-        setStartOfSales(response.data.startOfSales.split('-').reverse().join('/'))
-        setEndDate(response.data.endDate.split('-').reverse().join('/'))
-        setEndOfSales(response.data.endOfSales.split('-').reverse().join('/'))
+      setStartDate(response.data.startDate.split('-').reverse().join('/'))
+      setStartOfSales(response.data.startOfSales.split('-').reverse().join('/'))
+      setEndDate(response.data.endDate.split('-').reverse().join('/'))
+      setEndOfSales(response.data.endOfSales.split('-').reverse().join('/'))
 
-        setHourStartEvent(response.data.startDateTime)
-        setHourEndEvent(response.data.endDateTime)
-        setHourStartSale(response.data.startOfSalesTime)
-        setHourEndSale(response.data.endOfSalesTime)
-        setLocationName(response.data.locationName)
-        setZipCode(response.data.zipCode)
-        setNumber(response.data.number)
-        setStreet(response.data.street)
-        setNeighborhood(response.data.neighborhood)
-        setCity(response.data.city)
-        setState(response.data.state)
-        setComplement(response.data.complement)
-        setIdFile(response.data.map.idGoogle)
+      setHourStartEvent(response.data.startDateTime)
+      setHourEndEvent(response.data.endDateTime)
+      setHourStartSale(response.data.startOfSalesTime)
+      setHourEndSale(response.data.endOfSalesTime)
+      setLocationName(response.data.locationName)
+      setZipCode(response.data.zipCode)
+      setNumber(response.data.number)
+      setStreet(response.data.street)
+      setNeighborhood(response.data.neighborhood)
+      setCity(response.data.city)
+      setState(response.data.state)
+      setComplement(response.data.complement)
+      setIdFile(response.data.map.idGoogle)
 
-        // Coloque a lógica do segundo useEffect aqui
-        api.get('/api/files/v1/content/' + response.data.map.idGoogle, { headers, responseType: 'text' })
-          .then((fileResponse) => {
-            const valueSplit = fileResponse.data.split('<?xml version="1.0" encoding="UTF-8"?>')
-            var gpx = new GpxParser()
-            gpx.parse(valueSplit[1])
-            setPositions(gpx.tracks[0].points)
-            // console.log(gpx.tracks[0].points.map((p) => [p.lat, p.lon]))
 
-            setLat(gpx.tracks[0].points[0].lat)
-            setLon(gpx.tracks[0].points[0].lon)
-            setCenter([-28.666643856441578 , -49.372856989502914  ])
+      let fileResponse = await api.get('/api/files/v1/content/' + response.data.map.idGoogle, { headers, responseType: 'text' })
+      const valueSplit = fileResponse.data.split('<?xml version="1.0" encoding="UTF-8"?>')
+      var gpx = new GpxParser()
+      gpx.parse(valueSplit[1])
+      setPositions(gpx.tracks[0].points)
+      // console.log(gpx.tracks[0].points.map((p) => [p.lat, p.lon]))
 
-          })
+      setMapPoints(gpx.tracks[0].points)
+      const { lat, lon } = gpx.tracks[0].points[0];
+      setCenter([lat, lon])
 
-          .catch(error => console.log(error))
-      })
+      setElevacao(gpx.tracks[0].points.map(p => p.ele))
+      // setElevacao()
+
+      setDistancia(gpx.tracks[0].distance.cumul)
+      setGpxGeral(gpx.tracks[0])
+      console.log(gpx.tracks[0])
+    }
+
+    fetchMyAPI()
+
 
       .catch(error => {
         console.log(error)
       })
   }, [])
 
-  const labels = ['January', 'February', 'March', 'April', 'May', 'June', 'July'];
-
-  const options = {
-    responsive: true,
-    plugins: {
-      legend: {
-        position: 'top',
-      },
-      title: {
-        display: true,
-        text: 'Chart.js Line Chart',
-      },
-    },
+  const chartData = {
+    labels: distancia , // this is test data
+    datasets: [{
+      data: elevacao, // this is test data
+      borderColor: 'rgba(0,0,0)',
+      backgroundColor: 'GREEN',
+      tension: 0.1,
+      pointRadius: 3,
+      spanGaps: true
+    }]
   };
 
-  const data = {
-    labels: distancia,
-
-    datasets: [
-      {
-        label: 'Dataset 1',
-        data: [1, 2, 3],
-        borderColor: 'rgb(255, 99, 132)',
-        backgroundColor: 'rgba(255, 99, 132, 0.5)',
-      }
-    ]
-  }
+  const config = {
+    type: 'line',
+    data: chartData,
+  };
 
   function ticketQuantity(e) {
     e.preventDefault()
     console.log(quantity)
-
   }
 
-  console.log('lat', lat)
-  console.log('lon', lon)
-  console.log('center', [-28.666643856441578 , -49.372856989502914  ])
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      setShowMap(true);
+    }, 2000); // 10 segundos em milissegundos
+
+    return () => clearTimeout(timeout);
+  }, []);
+
 
   return (
     <div>
@@ -235,7 +237,7 @@ function Evento() {
                     <input type="text" value={quantity} className='quantity-input' readOnly />
                     <button type='button' onClick={() => setQuantity(quantity > 0 ? quantity - 1 : quantity)} className='quantity-btn'>-</button>
                     {quantity == 0 ?
-                      <Link to={'#'} onClick={()=> alert('Quantidade de ingressos não permitida')} className="btn btn-secondary buy-ticket pt-4 pb-4 mt-2"
+                      <Link to={'#'} onClick={() => alert('Quantidade de ingressos não permitida')} className="btn btn-secondary buy-ticket pt-4 pb-4 mt-2"
                         style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
                         Comprar
                       </Link>
@@ -263,28 +265,37 @@ function Evento() {
             <div className="row">
               <div className="col-12">
                 <h2 className='text-center'>Percurso</h2>
-                <MapContainer
-                  center={[-28.666643856441578 , -49.372856989502914]}
-                  zoom={12}
-                >
-                  <TileLayer
-                    attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-                    url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                  >
-                  </TileLayer>
-                  <Polyline
-                    pathOptions={{ fillColor: 'red', color: 'blue' }}
-
-                    positions={[
-                      positions.map(p => [p.lat, p.lon])
-                    ]}
-                  />
-                </MapContainer>
+                {showMap ? (
+                  <div>
+                    <div className="container-map">
+                    <div className='p-1  box-map ' >
+                      <p className='text-light' > Distancia aproximada do percurso: {parseInt(gpxGeral.distance.total)} Km</p>
+                      <p className='text-light' > Ponto mais alto aproximado: {parseInt(gpxGeral.elevation.max)} m</p>
+                    </div>
+                      <MapContainer
+                        center={center}
+                        zoom={12}
+                      >
+                        <TileLayer
+                          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                        />
+                        <Polyline
+                          pathOptions={{ fillColor: 'red', color: 'blue' }}
+                          positions={mapPoints.map(p => [p.lat, p.lon])}
+                        />
+                      </MapContainer>
+                   
+                    </div>
+                  </div>
+                ) : (
+                  <p>Carregando...</p>
+                )}
               </div>
               <div className="col-12 mt-4">
                 <h3 className='text-center'>Niveis de elevação</h3>
                 <div className="col-12 d-flex justify-content-center align-items-center" style={{ height: 400 }}>
-                  <Line options={options} data={data} />
+                  <Line options={config} data={chartData} />
                 </div>
               </div>
             </div>
